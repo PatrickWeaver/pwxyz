@@ -9,7 +9,7 @@ if(process.env.ENV == 'Test'){
 	db = mongoose.connect('mongodb://localhost/pwxyz_test');
 } else if(process.env.ENV == 'staging'){
 	console.log("ENV is staging");
-	db = mongoose.connect(process.env.MONGOLAB_URI
+	db = mongoose.connect(process.env.MONGOLAB_URI);
 } else {
 	console.log("ENV is not test or staging");
 	db = mongoose.connect('mongodb://localhost/pwxyz');
