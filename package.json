@@ -1,0 +1,33 @@
+{
+  "name": "pwxyz",
+  "version": "0.0.1",
+  "description": "A website chatbot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PatrickWeaver/pwxyz.git"
+  },
+  "author": "Patrick Weaver",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PatrickWeaver/pwxyz/issues"
+  },
+  "homepage": "https://github.com/PatrickWeaver/pwxyz#readme",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "gulp": "^3.9.1",
+    "gulp-mocha": "^2.2.0",
+    "gulp-nodemon": "^2.0.6",
+    "mongoose": "^4.4.13",
+    "should": "^8.3.1",
+    "sinon": "^1.17.3"
+  },
+  "devDependencies": {
+    "gulp-env": "^0.4.0",
+    "supertest": "^1.2.0"
+  }
+}
