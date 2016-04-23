@@ -7,9 +7,12 @@ var db;
 
 if(process.env.ENV == 'Test'){
 	db = mongoose.connect('mongodb://localhost/pwxyz_test');
+} else if(process.env.ENV == 'staging'){
+	console.log("ENV is staging");
+	db = mongoose.connect(process.env.MONGOLAB_URI
 } else {
-	console.log("Not Test");
-	db = mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/pwxyz');
+	console.log("ENV is not test or staging");
+	db = mongoose.connect('mongodb://localhost/pwxyz');
 }
 
 var Project = require('./models/projectModel');
