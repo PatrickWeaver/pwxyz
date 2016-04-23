@@ -7,6 +7,7 @@ var db;
 
 if(process.env.ENV == 'Test'){
 	db = mongoose.connect('mongodb://localhost/pwxyz_test');
+	console.log("Not Test");
 } else {
 	db = mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/pwxyz');
 }
