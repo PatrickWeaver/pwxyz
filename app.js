@@ -8,7 +8,7 @@ var db;
 if(process.env.ENV == 'Test'){
 	db = mongoose.connect('mongodb://localhost/pwxyz_test');
 } else {
-	db = mongoose.connect('mongodb://localhost/pwxyz');
+	db = mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/pwxyz');
 }
 
 var Project = require('./models/projectModel');
