@@ -18,8 +18,8 @@ var projectController = function(Project){
 
 		var query = {};
 
-		if (req.query.medium) {
-			query.medium = req.query.medium
+		if (req.query.media) {
+			query.media = req.query.media
 		}
 		Project.find(query, function(err, projects){
 			if(err){

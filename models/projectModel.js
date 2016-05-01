@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var projectModel = new Schema({
 	name: String,
-	medium: String,
+	media: [],
 	url: String,
 	alias: String,
 	collaborators: []

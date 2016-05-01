@@ -29,15 +29,20 @@ var routes = function(Project){
 				var returnProject = req.project.toJSON();
 
 				returnProject.links = {};
+				var mediaLinks = [];
 
-				var newLink = 'http://' + req.headers.host + '/api/projects?medium=' + returnProject.medium;
-				returnProject.links.filterByThisGenre = newLink.replace(' ', '%20');
+				for(var p in returnProject.media){
+					newLink = 'http://' + req.headers.host + '/api/projects?media=' + returnProject.media[p];
+					newLink.replace(' ', '%20');
+					mediaLinks.push(newLink);
+				}
+				returnProject.links.filterByTheseMedia = mediaLinks;
 				res.json(returnProject);
 			})
 
 		.put(function(req,res){
 			req.project.name = req.body.name;
-			req.project.medium = req.body.medium;
+			req.project.media = req.body.media;
 			req.project.url = req.body.url;
 			req.project.alias = req.body.alias;
 			req.project.collaborators = req.body.collaborators;
