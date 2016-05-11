@@ -13,6 +13,26 @@ body {
   padding: 20px 10px;
 }
 
+a:link {
+    text-decoration: none;
+    color: black;
+}
+
+a:visited {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: black;
+}
+
+a:active {
+    text-decoration: underline;
+    color: black;
+}
+
 textarea:hover, 
 input:hover, 
 textarea:active, 
