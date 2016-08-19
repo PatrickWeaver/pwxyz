@@ -1,6 +1,7 @@
 var app = angular.module('Chats', []);
 
-app.controller('mainController', function($scope, $http) {
+
+app.controller('mainController', function($scope, $http, $timeout) {
 	$scope.formData = {};
 
 
@@ -11,13 +12,30 @@ app.controller('mainController', function($scope, $http) {
 
 	]
 
+	$scope.send = function(who, message) {
+		console.log("sending: " + message)
+		$scope.chats.push({
+			who: who, timestamp: Date.now(), message: message
+		})
+	}
+
 	$scope.userChat = function() {
 		compose_area = document.getElementById("composer");
 		message = compose_area.value;
-		compose_area.value = ""
-		$scope.chats.push({
-			who: 'user', timestamp: Date.now(), message: message
-		});
+		who = "user";
+		compose_area.value = "";
+		$scope.send(who, message);
+		$scope.sendToBot();
+	}
+
+	$scope.sendToBot = function() {
+		who = "bot";
+		message = "I received your chat.";
+		wait = 400;
+
+		$timeout(function() {
+			$scope.send(who, message)
+		}, wait);
 	}
 
 
