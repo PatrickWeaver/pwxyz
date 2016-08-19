@@ -1,0 +1,38 @@
+<!doctype html>
+
+<html ng-app="Chats">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+  	<title>Patrick Weaver!</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
+	<script src="js/core.js"></script>
+
+</head>
+
+<body ng-controller="mainController">
+
+<h1>Patrick Weaver</h1>
+
+<div ng-repeat="chat in chats | orderBy: 'timestamp'" class="chat-container">
+	<div class="chat-wrapper">
+		<p class="chat-{{chat.who}}">
+			<strong>{{chat.who}} at {{chat.timestamp}}:</strong><br>
+			{{chat.message}}
+		</p>
+		<div class="avatar avatar-{{chat.who}}"></div>
+	</div>
+</div>
+
+<div id="compose-area">
+    <textarea id="composer" class='text-input' type='text' autofocus='autofocus'></textarea>
+    <div id="sendButton">
+      <button ng-click="userChat()">&nbsp;↵&nbsp;</button>
+    </div>
+</div>
+
+</body>
+</html>

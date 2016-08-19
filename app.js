@@ -35,11 +35,11 @@ app.use('/api/projects', projectRouter);
 app.use('/api/chats', chatRouter);
 
 app.get('/', function(req, res){
-	res.sendFile(__dirname + '/public/index.html');
+	res.sendFile(__dirname + '/views/index.html');
 });
 
 app.get('/new', function(req, res){
-	res.sendFile(__dirname + '/public/new/index.html');
+	res.sendFile(__dirname + '/views/new/index.html');
 });
 
 app.listen(port, function(){
