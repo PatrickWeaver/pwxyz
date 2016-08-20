@@ -15,7 +15,6 @@ var projectController = function(Project){
 	}
 
 	var get = function(req,res){
-
 		var query = {};
 
 		if (req.query.media) {
