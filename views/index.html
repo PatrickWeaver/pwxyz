@@ -9,7 +9,6 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-	<script src="js/core.js"></script>
 
 </head>
 
@@ -29,10 +28,13 @@
 
 <div id="compose-area">
     <textarea id="composer" class='text-input' type='text' autofocus='autofocus'></textarea>
-    <div id="sendButton">
-      <button ng-click="userChat()">&nbsp;↵&nbsp;</button>
+    <div id="send-button">
+      <button>&nbsp;↵&nbsp;</button>
     </div>
 </div>
 
+
+<script src="js/core.js"></script>
+<script src="js/listen.js"></script>
 </body>
 </html>

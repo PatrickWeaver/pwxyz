@@ -3,6 +3,7 @@ var count  = 0;
 var scriptCount = 0;
 
 
+
 app.controller('mainController', function($scope, $http, $timeout) {
 	$scope.formData = {};
 
@@ -21,7 +22,7 @@ app.controller('mainController', function($scope, $http, $timeout) {
 		})
 	}
 
-	getMessage = function() {
+	getBotMessage = function() {
 		var data;
 		var firstData;
 
@@ -40,54 +41,23 @@ app.controller('mainController', function($scope, $http, $timeout) {
 				console.log("status ok, but something went wrong");
 			}
 		};
-
 		call.onerror = function() {
 			console.log('Error: ' + call.status);
 		}
 
 		call.send();
 
-		
-
 		return message;
-
 	}
 
-	$scope.userChat = function() {
-		compose_area = document.getElementById("composer");
-		message = compose_area.value;
-		who = "user";
-		compose_area.value = "";
-		send(who, message);
-		message = "";
-		sendToBot();
-	}
 
 	sendToBot = function() {
 		who = "bot";
 		wait = 400;
-		message = getMessage();
-
-
+		message = getBotMessage();
 
 		$timeout(function() {
 			send(who, message)
 		}, wait);
 	}
-
-
-
-
-/*
-
-	$http.get('/api/chats')
-		.success(function(data){
-			$scope.chats = data;
-			console.log(data);
-		})
-		.error(function(data){
-			console.log('Error: ' + data);
-		});
-
-		*/
 });
