@@ -3,7 +3,9 @@ var mongoose = require('mongoose'),
 
 var scriptModel = new Schema({
 	script: Number,
-	chats: Array
+	name: String,
+	description: String,
+	chats: Array,
 });
 
 module.exports = mongoose.model('Script', scriptModel);

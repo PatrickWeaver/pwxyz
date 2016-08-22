@@ -3,10 +3,10 @@ var mongoose = require('mongoose'),
 
 var projectModel = new Schema({
 	name: String,
-	media: [],
+	media: Array,
 	url: String,
 	alias: String,
-	collaborators: []
+	collaborators: Array
 });
 
 module.exports = mongoose.model('Project', projectModel);

@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var chatModel = new Schema({
 	guest: String,
-	chats: []
+	chats: Array
 });
 
 module.exports = mongoose.model('Chat', chatModel);

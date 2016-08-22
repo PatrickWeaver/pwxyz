@@ -18,6 +18,7 @@ if(process.env.ENV == 'ENV is Test'){
 var Project = require('./models/projectModel');
 var Chat = require('./models/chatModel');
 var Script = require('./models/scriptModel');
+var Switcher = require('./models/switcherModel');
 
 
 var app = express();
@@ -32,10 +33,12 @@ app.use(bodyParser.json());
 projectRouter = require('./routes/projectRoutes')(Project)
 chatRouter = require('./routes/chatRoutes')(Chat)
 scriptRouter = require('./routes/scriptRoutes')(Script)
+switcherRouter = require('./routes/switcherRoutes')(Switcher)
 
 app.use('/api/projects', projectRouter);
 app.use('/api/chats', chatRouter);
 app.use('/api/scripts', scriptRouter);
+app.use('/api/switchers', switcherRouter);
 
 app.get('/', function(req, res){
 	res.sendFile(__dirname + '/views/index.html');

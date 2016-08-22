@@ -14,25 +14,26 @@
 
 <body ng-controller="mainController">
 
-<h1>Patrick Weaver</h1>
+<div id="wrapper">
+	<div id="chat-area">
+		<div ng-repeat="chat in chats | orderBy: 'timestamp'" class="chat-container">
+			<div class="chat-wrapper">
+				<p class="chat-{{chat.who}}">
+					<strong>{{chat.who}} at {{chat.timestamp}}:</strong><br>
+					{{chat.message}}
+				</p>
+				<div class="avatar avatar-{{chat.who}}"></div>
+			</div>
+		</div>
+	</div>
 
-<div ng-repeat="chat in chats | orderBy: 'timestamp'" class="chat-container">
-	<div class="chat-wrapper">
-		<p class="chat-{{chat.who}}">
-			<strong>{{chat.who}} at {{chat.timestamp}}:</strong><br>
-			{{chat.message}}
-		</p>
-		<div class="avatar avatar-{{chat.who}}"></div>
+	<div id="compose-area">
+	    <textarea id="composer" class='text-input' type='text' autofocus='autofocus'></textarea>
+	    <div id="send-button">
+	      <button>&nbsp;↵&nbsp;</button>
+	    </div>
 	</div>
 </div>
-
-<div id="compose-area">
-    <textarea id="composer" class='text-input' type='text' autofocus='autofocus'></textarea>
-    <div id="send-button">
-      <button>&nbsp;↵&nbsp;</button>
-    </div>
-</div>
-
 
 <script src="js/core.js"></script>
 <script src="js/listen.js"></script>

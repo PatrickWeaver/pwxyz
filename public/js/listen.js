@@ -42,8 +42,8 @@ function listen(e) {
     message = composer.value;
     composer.value = "";
     send("user", message);
+    getBotMessage(message);
     message = "";
-    sendToBot();
     listenFor();
   }
 }
