@@ -3,11 +3,10 @@ var scriptController = function(Script){
 	var post = function(req, res){
 		var script = new Script(req.body);
 
-		if(!req.body.script){
+		if(!req.body.chats){
 			res.status(400);
-			res.send('Script number is required');
+			res.send('Chats are required');
 		} else {
-
 			script.save();
 			res.status(201);
 			res.send(script);
@@ -16,9 +15,9 @@ var scriptController = function(Script){
 
 	var get = function(req,res){
 		var query = {};
-
-		if (req.query.script) {
-			query.script = req.query.script
+		// What can you search by in the URL?
+		if (req.query.special) {
+			query.special = req.query.special
 		}
 		Script.find(query, function(err, scripts){
 			if(err){

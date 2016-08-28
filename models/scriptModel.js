@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 var scriptModel = new Schema({
 	script: Number,
 	name: String,
+	special: Number,
 	description: String,
 	chats: Array,
 });
