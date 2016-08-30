@@ -31,102 +31,10 @@ app.controller('mainController', function($scope, $http, $timeout) {
 		} else {
 			// Go to pre-goodbye or goodbye script
 			console.log(" || On " + script_count + " of " + script_length + " in script. I am out of things to say.");
-			sendToBot("I am out of things to say");
+			script_count = 0;
+			// Need to prevent goodbye loop, or store the special?
+			apiCall("GET", "scripts", "special", "2")
 		}
-
-
-
-
-
-
-
-		/*
-
-			scriptCall = new XMLHttpRequest();
-			// Problem that it starts over every time, does too many API calls, and goes back to original script.
-			scriptCall.open("GET", "/api/scripts?script=1");
-			scriptCall.send();
-
-			scriptCall.onload = function() {
-				if (scriptCall.status >= 200 && scriptCall.status < 400) {
-					// Switch this to random at some point
-					scriptToUse = JSON.parse(scriptCall.responseText)[0];
-					scriptLength = scriptToUse.chats.length;
-					console.log("<> Script Loaded: " + scriptToUse.chats);
-
-					switcherCall = new XMLHttpRequest();
-					// This might break if there are more than 1 fromScript in the array?
-					switcherCall.open("GET", "/api/switchers?fromScripts=" + scriptToUse._id);
-					switcherCall.send();
-
-					switcherCall.onload = function() {
-						keywordFound = false;
-						//Put this in a function
-						if(switcherCall.status >=200 && switcherCall.status < 400) {
-							// Switch this to random at some point
-							switcherToUse = JSON.parse(switcherCall.responseText)[0];
-							for (keyword in switcherToUse.keywords) {
-								searchWord = switcherToUse.keywords[keyword];
-								if (userMessage.includes(searchWord)) {
-									console.log("<> Keyword! '" + searchWord + "' found in user input");
-									scriptCall2 = new XMLHttpRequest();
-									url = "/api/scripts/" + switcherToUse.toScripts[0];
-									console.log("<> Switching to: " + url);
-									scriptCall2.open("Get", url);
-									scriptCall2.send();
-
-									scriptCall2.onload = function() {
-										if (scriptCall2.status >= 200 && scriptCall2.status < 400) {
-											scriptCount = 0;
-											//took out [0] but what if there is more than 1?
-											scriptToUse = JSON.parse(scriptCall2.responseText);
-											console.log("<> Switched script, script loaded: " + scriptToUse.chats);
-
-										botMessage = scriptToUse.chats[script_count];
-										sendToBot(bot_message);
-										script_count += 1;
-										}
-
-									};
-									scriptCall2.onerror = function() {
-										console.log('Error: ' + scriptCall2.status);
-									}
-									keywordFound = true;
-									break
-								} else {
-									console.log("<> '" + searchWord + "' keyword not found in user input");
-								}
-							}
-							if (!keywordFound){
-								botMessage = scriptToUse.chats[script_count];
-								sendToBot(bot_message);
-								script_count += 1;
-							}
-
-						} else {
-							console.log("!! Status: " + switcherCall.status + ", but something went wrong");
-						}
-
-					};
-					switcherCall.onerror = function() {
-						console.log('Error: ' + switcherCall.status)
-					}
-
-
-
-					
-					
-					
-				} else {
-					console.log("status" + scriptCall.status + ", but something went wrong");
-				}
-			};
-			scriptCall.onerror = function() {
-				console.log('Error: ' + scriptCall.status);
-			}
-
-
-		*/
 
 	}
 
