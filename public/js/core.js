@@ -32,7 +32,7 @@ app.controller('mainController', function($scope, $http, $timeout) {
 			// Go to pre-goodbye or goodbye script
 			console.log(" || On " + script_count + " of " + script_length + " in script. I am out of things to say.");
 			script_count = 0;
-			// Need to prevent goodbye loop, or store the special?
+			// Need to prevent goodbye loop, or store the special in a variable?
 			apiCall("GET", "scripts", "special", "2")
 		}
 
