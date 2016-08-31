@@ -1,6 +1,8 @@
 var app = angular.module('Chats', []);
 var count  = 0;
 var script_count = 0;
+var special = 1
+var doneChatting = false;
 
 var current_script;
 var script_length;
@@ -12,7 +14,7 @@ app.controller('mainController', function($scope, $http, $timeout) {
 	$scope.chats = [];
 	
 	start = function() {
-	start_call = apiCall("GET", "scripts", "special", "1");
+	start_call = apiCall("GET", "scripts", "special", special);
 	};
 
 	send = function(who, sentMessage) {
@@ -23,17 +25,38 @@ app.controller('mainController', function($scope, $http, $timeout) {
 		})
 	}
 
+	sendFromUser = function(userMessage) {
+	console.log("send from user")
+	who = "user";
+	wait = 10;
+	$timeout(function() {
+		send(who, userMessage)
+		getBotMessage(userMessage);
+	}, wait);
+		
+	}
+
+	
+
 	getBotMessage = function(userMessage) {
 		// Runs when a user inputs a message
 		if (script_length > script_count) {
 			console.log(" || On " + script_count + " of " + script_length + " in script.");
 			sendToBot();
 		} else {
-			// Go to pre-goodbye or goodbye script
-			console.log(" || On " + script_count + " of " + script_length + " in script. I am out of things to say.");
-			script_count = 0;
-			// Need to prevent goodbye loop, or store the special in a variable?
-			apiCall("GET", "scripts", "special", "2")
+			if (special != 2) {
+				// Go to pre-goodbye or goodbye script
+				console.log(" || On " + script_count + " of " + script_length + " in script. I am out of things to say.");
+				script_count = 0;
+				special = 2; // Set special to 2 to start Goodbye script
+				// Need to prevent goodbye loop, or store the special in a variable?
+				apiCall("GET", "scripts", "special", special)
+			} else {
+				doneChatting = true;
+				who = "user";
+				console.log("else else " + script_count + " of " + script_length + " Special: " + special)
+			}
+			
 		}
 
 	}
@@ -41,7 +64,10 @@ app.controller('mainController', function($scope, $http, $timeout) {
 
 
 
+
+
 	sendToBot = function(parameter) {
+		console.log("send to bot")
 		// Runs when an api call returns a response
 		who = "bot";
 		wait = 400;
@@ -54,6 +80,7 @@ app.controller('mainController', function($scope, $http, $timeout) {
 			send(who, bot_message)
 			script_count += 1;
 		}, wait);
+		console.log($scope.chats);
 		
 	}
 

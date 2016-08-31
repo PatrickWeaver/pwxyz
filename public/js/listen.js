@@ -41,8 +41,7 @@ function listen(e) {
     pauseListening();
     message = composer.value;
     composer.value = "";
-    send("user", message);
-    getBotMessage(message);
+    sendFromUser(message);
     message = "";
     listenFor();
   }
