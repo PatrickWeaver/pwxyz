@@ -18,6 +18,8 @@ var scriptController = function(Script){
 		// What can you search by in the URL?
 		if (req.query.special) {
 			query.special = req.query.special
+		} else if (req.query._id) {
+			query._id = req.query._id
 		}
 		Script.find(query, function(err, scripts){
 			if(err){
