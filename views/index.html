@@ -18,7 +18,7 @@
 	<div id="chat-area">
 		<div ng-repeat="chat in chats | orderBy: 'timestamp'" class="chat-container">
 			<div class="chat-wrapper">
-				<p class="chat-{{chat.who}}">
+				<p class="chat-{{chat.who}}" id="chat-{{chat.count}}">
 					<strong>{{chat.who}} at {{chat.timestamp}}:</strong><br>
 					{{chat.message}}
 				</p>

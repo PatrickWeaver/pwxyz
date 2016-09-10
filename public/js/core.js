@@ -25,8 +25,9 @@ app.controller('mainController', function($scope, $http, $timeout) {
 		// Runs when a user inputs a message or when a bot finds a message using getBotMessage()
 		console.log("sending: '" + sentMessage + "' from " + who)
 		$scope.chats.push({
-			who: who, timestamp: Date.now(), message: sentMessage
-		})
+			who: who, timestamp: Date.now(), message: sentMessage, count: count
+		});
+		count += 1;
 	}
 
 	sendFromUser = function(userMessage) {
