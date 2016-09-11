@@ -9,8 +9,10 @@ var switch_to;
 var current_script;
 var script_length;
 
+var newchat = "o";
 
-app.controller('mainController', function($scope, $http, $timeout) {
+
+app.controller('mainController', function($scope, $http, $timeout, $location, $anchorScroll) {
 	$scope.formData = {};
 
 	$scope.chats = [];
@@ -25,10 +27,13 @@ app.controller('mainController', function($scope, $http, $timeout) {
 		// Runs when a user inputs a message or when a bot finds a message using getBotMessage()
 		console.log("sending: '" + sentMessage + "' from " + who)
 		$scope.chats.push({
-			who: who, timestamp: Date.now(), message: sentMessage, count: count
+			id: count, who: who, timestamp: Date.now(), message: sentMessage, count: count
 		});
+		$location.hash('chat-' + count);
+		$anchorScroll();
 		count += 1;
 	}
+
 
 	sendFromUser = function(userMessage) {
 
@@ -86,13 +91,14 @@ app.controller('mainController', function($scope, $http, $timeout) {
 		console.log("## sendToBot()");
 		// Runs when an api call returns a response
 		who = "bot";
-		wait = 400;
+		wait = 800;
 		if (parameter){
 			bot_message = parameter;
 		} else {
 			bot_message = current_script.chats[script_count];
 		}
 		$timeout(function() {
+			console.log("sendToBot() TIMEOUT")
 			send(who, bot_message)
 			script_count += 1;
 		}, wait);
