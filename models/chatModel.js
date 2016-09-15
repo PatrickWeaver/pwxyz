@@ -3,6 +3,8 @@ var mongoose = require('mongoose'),
 
 var chatModel = new Schema({
 	guest: String,
+	name: Array,
+	other_chats: Array,
 	chats: Array
 });
 

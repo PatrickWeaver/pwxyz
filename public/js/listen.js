@@ -1,9 +1,3 @@
-/*
-
-This JavaScript file has code to allow a user to choose to press the Start or ⏎ button, or to press the Enter key on their keyboard using the .keycode property.
-
-*/
-
 // listener is a variable to decide what input to look for
 var enterListener = window;
 var sendListener = document.getElementById("send-button");

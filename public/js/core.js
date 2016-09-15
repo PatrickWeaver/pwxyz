@@ -1,3 +1,15 @@
+/*
+
+To Do:
+- - - - - -
+@media css
+
+
+
+*/
+
+
+
 var app = angular.module('Chats', []);
 var count  = 0;
 var script_count = 0;
@@ -37,6 +49,8 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 	sendFromUser = function(userMessage) {
 
+		alert(user_ip);
+
 		console.log("## sendFromUser()");
 		who = "user";
 		wait = 10;
@@ -53,6 +67,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		console.log("## getBotMessage");
 		// Runs when a user inputs a message
 		keyword_found = false;
+
 
 		for (from_chat_script in keyword_set)	{
 			for (i in keyword_set[from_chat_script]) {

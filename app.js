@@ -1,6 +1,8 @@
 var express = require('express'),
 	mongoose = require('mongoose'),
+	pug = require('pug'),
 	bodyParser = require('body-parser');
+
 
 
 var db;
@@ -18,10 +20,9 @@ if(process.env.ENV == 'ENV is Test'){
 var Project = require('./models/projectModel');
 var Chat = require('./models/chatModel');
 var Script = require('./models/scriptModel');
-var Switcher = require('./models/switcherModel');
-
 
 var app = express();
+app.set('view engine', 'pug')
 
 
 var port = process.env.PORT || 3000;
@@ -33,12 +34,10 @@ app.use(bodyParser.json());
 projectRouter = require('./routes/projectRoutes')(Project)
 chatRouter = require('./routes/chatRoutes')(Chat)
 scriptRouter = require('./routes/scriptRoutes')(Script)
-switcherRouter = require('./routes/switcherRoutes')(Switcher)
 
 app.use('/api/projects', projectRouter);
 app.use('/api/chats', chatRouter);
 app.use('/api/scripts', scriptRouter);
-app.use('/api/switchers', switcherRouter);
 
 app.get('/', function(req, res){
 	res.sendFile(__dirname + '/views/index.html');
@@ -46,6 +45,19 @@ app.get('/', function(req, res){
 
 app.get('/new', function(req, res){
 	res.sendFile(__dirname + '/views/new/index.html');
+});
+
+app.get('/p', function(req, res){
+	var ip = req.headers['x-forwarded-for'] || 
+     req.connection.remoteAddress || 
+     req.socket.remoteAddress ||
+     req.connection.socket.remoteAddress;
+	console.log(ip);
+
+	res.render('pugtest', {
+	test: 'kal;sdfjk;aldsf',
+	ip: ip
+	})
 });
 
 app.listen(port, function(){
