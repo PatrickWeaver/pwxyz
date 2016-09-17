@@ -1,3 +1,18 @@
+
+/*
+
+To Do:
+- - - - - -
+@media css
+add auth/auth to api
+add gui or chat interface for writing/reading db
+
+
+
+*/
+
+
+
 var express = require('express'),
 	mongoose = require('mongoose'),
 	pug = require('pug'),
@@ -41,7 +56,19 @@ app.use('/api/chats', chatRouter);
 app.use('/api/scripts', scriptRouter);
 
 app.get('/', function(req, res){
-	res.sendFile(__dirname + '/views/index.html');
+	var guest_ip = req.headers['x-forwarded-for'] || 
+     req.connection.remoteAddress || 
+     req.socket.remoteAddress ||
+     req.connection.socket.remoteAddress;
+
+	res.render('index', {
+	pretty: true,
+
+	// Template variables
+	guest_ip: guest_ip,
+	pageTitle: 'Patrick Weaver!'
+	
+	})
 });
 
 app.get('/new', function(req, res){
@@ -49,21 +76,7 @@ app.get('/new', function(req, res){
 });
 
 app.get('/p', function(req, res){
-	var ip = req.headers['x-forwarded-for'] || 
-     req.connection.remoteAddress || 
-     req.socket.remoteAddress ||
-     req.connection.socket.remoteAddress;
-	console.log(ip);
 
-	res.render('pugtest', {
-	pretty: true,
-	
-	test: 'kal;sdfjk;aldsf',
-	ip: ip,
-	pageTitle: 'PugTest',
-	youAreUsingPug: true
-	
-	})
 });
 
 app.listen(port, function(){

@@ -1,15 +1,3 @@
-/*
-
-To Do:
-- - - - - -
-@media css
-
-
-
-*/
-
-
-
 var app = angular.module('Chats', []);
 var count  = 0;
 var script_count = 0;
@@ -33,26 +21,39 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 	
 	start = function() {
 		console.log("## start()");
-		start_call = apiCall("GET", "scripts", "special", special);
+		start_call = apiGET("scripts", "special", special);
 	};
 
 	send = function(who, sentMessage) {
 		console.log("## send()");
 		// Runs when a user inputs a message or when a bot finds a message using getBotMessage()
 		console.log("sending: '" + sentMessage + "' from " + who)
+
+		time_sent = Date.now();
+
+		// Log chat in API:
+		apiPOST(
+			JSON.stringify({
+				"guest_id": 1,
+				"guest_ip": guest_ip,
+				"chat": [who, sentMessage],
+				"time": time_sent
+
+			}), "chats")
+
+
+		// Push to browser
 		$scope.chats.push({
-			id: count, who: who, timestamp: Date.now(), message: sentMessage, count: count
+			id: count, who: who, timestamp: time_sent, message: sentMessage, count: count
 		});
 		$location.hash('chat-' + count);
 		$anchorScroll();
+
 		count += 1;
 	}
 
 
 	sendFromUser = function(userMessage) {
-
-		alert(guest_ip);
-
 		console.log("## sendFromUser()");
 		who = "user";
 		wait = 10;
@@ -84,7 +85,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 									console.log("** delete keywords from: " + key_to_delete);
 									delete keyword_set[key_to_delete];
 								}
-								apiCall("GET", "scripts", "_id", to_chat);
+								apiGET("scripts", "_id", to_chat);
 								break
 							} else {
 								console.log("@ no keyword")
@@ -107,7 +108,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 					script_count = 0;
 					special = 2; // Set special to 2 to start Goodbye script
 					// Need to prevent goodbye loop, or store the special in a variable?
-					apiCall("GET", "scripts", "special", special)
+					apiGET("scripts", "special", special)
 				} else {
 					doneChatting = true;
 					who = "user";
@@ -138,23 +139,30 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 	}
 
 
-	apiCall = function(reqType, model, key, value) {
-		console.log("## apiCall()");
+	apiGET = function(model, key, value) {
+		console.log("## apiGET()");
 
 		persist_keywords = false;
 		script_count = 0;
 
-		url = "/api/" + model + "?" + key + "=" + value;
-		console.log("Called: " + url);
+		if (key && value) {
+			url = "/api/" + model + "?" + key + "=" + value;
+		} else {
+			url = "/api/" + model;
+		}
+		
 
-		api_call = new XMLHttpRequest();
-		api_call.open(reqType, url);
-		api_call.send();
+		console.log("GET: " + url);
 
-		api_call.onload = function() {
-			if (api_call.status >= 200 && api_call.status < 400) {
+		api_get = new XMLHttpRequest();
+		api_get.open("GET", url);
+		api_get.setRequestHeader("Content-type", "application/json");
+		api_get.send();
 
-				api_response = JSON.parse(api_call.responseText);
+		api_get.onload = function() {
+			if (api_get.status >= 200 && api_get.status < 400) {
+
+				api_response = JSON.parse(api_get.responseText);
 				numberOf = api_response.length;
 				randomScript = Math.floor((Math.random() * numberOf)); 
 				current_script = api_response[randomScript];
@@ -177,8 +185,38 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 				sendToBot();
 
 			} else {
-						console.log("!! Status: " + api_call.status + ", but something went wrong");
+						console.log("!! Status: " + api_get.status + ", but something went wrong");
 					}
+
+		};
+	};
+
+	apiPOST = function(body, model, key, value) {
+		console.log("## apiPOST()");
+
+		if (key && value) {
+			url = "/api/" + model + "?" + key + "=" + value;
+		} else {
+			url = "/api/" + model;
+		}
+		
+
+		console.log("POST: " + url + " body: " + body);
+
+		api_post = new XMLHttpRequest();
+		api_post.open("POST", url);
+		api_post.setRequestHeader("Content-Type", "application/json");
+		
+
+		api_post.send(body);
+
+		api_post.onload = function() {
+			if (api_post.status >= 200 && api_post.status < 400) {
+				console.log("!! Status: " + api_post.status)
+
+			} else {
+				console.log("!! Status: " + api_post.status + ", but something went wrong");
+			}
 
 		};
 	};

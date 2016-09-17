@@ -30,7 +30,7 @@ var routes = function(Chat){
                 res.json(returnChat);
             })
 
-        .put(function(req,res){
+        /*.put(function(req,res){
             req.chat.guest = req.body.guest;
             req.chat.chats = req.body.chats;
             req.chat.save(function(err){
@@ -40,7 +40,7 @@ var routes = function(Chat){
                     res.json(req.chat);
                 }
             });
-        })
+        })*/
 
         .patch(function(req,res){
             if(req.body._id){
