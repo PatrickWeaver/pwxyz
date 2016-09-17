@@ -1,19 +1,33 @@
 doctype html
-html(lang="en")
-  head
-    title= pageTitle
-    script(type='text/javascript').
-      if (foo) bar(1 + 5)
-  body
-    h1 Pug - node template engine
-    #container.col
-      if youAreUsingPug
-        p You are amazing
-      else
-        p Get on it!
-      p.
-        Pug is a terse and simple templating language with a
-        strong focus on performance and powerful features.
+html(lang="en" ng-app="Chats")
+  
+  include head.pug
+  
+  body(ng-controller="mainController")
+    div(id="wrapper")
+      div(id="chat-area")
+        div(
+          ng-repeat="chat in chats | orderBy: 'timestamp'"
+          class="chat-container"
+        )
+          div(class="chat-wrapper").
+            <p class='chat-{{chat.who}}' id='chat-{{chat.id}}'> 
+            {{chat.who}} at {{chat.timestamp}}:<br>
+            {{chat.message}}
+            </p>
+            <div class="avatar avatar-{{chat.who}}"></div>
+    div(id="compose-area")
+      textarea(
+        id="composer"
+        class="text-input"
+        type="text"
+        autofocus="autofocus"
+      )
+      div(id="send-button")
+        button.
+          &nbsp;↵&nbsp;
+    div(style="display: none;" id="guest-ip").
+      #{ip}
 
-      h2= ip
-      h2= test
+    script(type="text/javascript" src="js/core.js")
+    script(type="text/javascript" src='js/listen.js')

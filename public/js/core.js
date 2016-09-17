@@ -21,6 +21,8 @@ var persist_keywords = false;
 var current_script;
 var script_length;
 
+var guest_ip = document.getElementById("guest-ip").innerHTML;
+
 var newchat = "o";
 
 
@@ -49,7 +51,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 	sendFromUser = function(userMessage) {
 
-		alert(user_ip);
+		alert(guest_ip);
 
 		console.log("## sendFromUser()");
 		who = "user";

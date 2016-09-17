@@ -23,6 +23,7 @@ var Script = require('./models/scriptModel');
 
 var app = express();
 app.set('view engine', 'pug')
+app.set('view options', { pretty: true })
 
 
 var port = process.env.PORT || 3000;
@@ -55,8 +56,13 @@ app.get('/p', function(req, res){
 	console.log(ip);
 
 	res.render('pugtest', {
+	pretty: true,
+	
 	test: 'kal;sdfjk;aldsf',
-	ip: ip
+	ip: ip,
+	pageTitle: 'PugTest',
+	youAreUsingPug: true
+	
 	})
 });
 
