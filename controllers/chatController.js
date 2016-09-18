@@ -5,10 +5,6 @@ var chatController = function(Chat){
 
 		if(!req.body.guest_ip){
 			res.status(400);
-			bb = [];
-			for (i in req.body) {
-				bb.push(i + ": " + req.body[i]);
-			}
 			res.send('Guest IP is required');
 		} else {
 			chat.save();

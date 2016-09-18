@@ -11,11 +11,11 @@ html(lang="en" ng-app="Chats")
           class="chat-container"
         )
           div(class="chat-wrapper").
-            <p class='chat-{{chat.who}}' id='chat-{{chat.id}}'> 
-            {{chat.who}} at {{chat.timestamp}}:<br>
+            <p class='chat-{{chat.user_type}}' id='chat-{{chat.id}}'> 
+            {{chat.name}} at {{chat.timestamp}}:<br>
             {{chat.message}}
             </p>
-            <div class="avatar avatar-{{chat.who}}"></div>
+            <div class="avatar avatar-{{chat.user_type}}"></div>
     div(id="compose-area")
       textarea(
         id="composer"
@@ -28,5 +28,8 @@ html(lang="en" ng-app="Chats")
           &nbsp;↵&nbsp;
     div(style="display: none;" id="guest-ip").
       #{guest_ip}
+    script(type="text/javascript" src="js/api.js")
     script(type="text/javascript" src="js/core.js")
-    script(type="text/javascript" src='js/listen.js')
+    script(type="text/javascript" src="js/guest.js")
+    script(type="text/javascript" src="js/listen.js")
+    script(type="text/javascript" src="js/main.js")

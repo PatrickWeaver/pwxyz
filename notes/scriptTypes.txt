@@ -1,0 +1,15 @@
+Script Types
+
+Specials:
+- - - - - - - - -
+0: Start no name, ask for name
+1: Start no name, persist keywords
+2: Goodbye
+3: Projects
+4: Start multiple names
+5: Start one name
+
+
+Types:
+- - - - - - - - -
+ask name (0): Starting point, ask the user for a name before determining guest

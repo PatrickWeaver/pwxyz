@@ -23,12 +23,21 @@ function listen(e) {
     e.preventDefault();
     if (!e.shiftKey) {
       console.log("⌨ Listen Event: " + e + ", Type: " + e.type + ", Keycode: " + e.keyCode);
-      chat = true;
+      if (composer.value != "") {
+        chat = true;
+      } else {
+        composer.focus();
+      }
+      
     }
   }
   if (e.type == "click") {
     console.log("🖱 Listen Event: " + e + ", Type: " + e.type + ", Button: " + e.which);
-    chat = true;
+    if (composer.value != "") {
+        chat = true;
+    } else {
+      composer.focus();
+    }
 
   }
   if (chat) {

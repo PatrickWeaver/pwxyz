@@ -2,11 +2,11 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var scriptModel = new Schema({
-	name: String,
 	special: Number,
+	type: String,
 	description: String,
 	chats: Array,
-	keywords: Array
+	keywords: Object
 });
 
 module.exports = mongoose.model('Script', scriptModel);

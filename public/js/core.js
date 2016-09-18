@@ -1,7 +1,7 @@
 var app = angular.module('Chats', []);
 var count  = 0;
 var script_count = 0;
-var special = 1
+var special = 1;
 var doneChatting = false;
 var keyword_set = {};
 var persist_keywords = false;
@@ -9,23 +9,18 @@ var persist_keywords = false;
 var current_script;
 var script_length;
 
-var guest_ip = document.getElementById("guest-ip").innerHTML;
+var guest_id = "";
+console.log(guest_id);
 
-var newchat = "o";
-
+var tilde_insert = [];
 
 app.controller('mainController', function($scope, $http, $timeout, $location, $anchorScroll) {
 	$scope.formData = {};
 
 	$scope.chats = [];
-	
-	start = function() {
-		console.log("## start()");
-		start_call = apiGET("scripts", "special", special);
-	};
 
 	send = function(who, sentMessage) {
-		console.log("## send()");
+		console.log("⚙ send()");
 		// Runs when a user inputs a message or when a bot finds a message using getBotMessage()
 		console.log("sending: '" + sentMessage + "' from " + who)
 
@@ -34,17 +29,24 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		// Log chat in API:
 		apiPOST(
 			JSON.stringify({
-				"guest_id": 1,
+				"guest_id": guest_id,
 				"guest_ip": guest_ip,
 				"chat": [who, sentMessage],
 				"time": time_sent
 
-			}), "chats")
+			}), "chats"
+		)
+
+		if (who === "bot") {
+			user_type = "bot";
+		} else {
+			user_type = "user";
+		}
 
 
 		// Push to browser
 		$scope.chats.push({
-			id: count, who: who, timestamp: time_sent, message: sentMessage, count: count
+			id: count, name: who, user_type: user_type, timestamp: time_sent, message: sentMessage, count: count
 		});
 		$location.hash('chat-' + count);
 		$anchorScroll();
@@ -54,31 +56,40 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 
 	sendFromUser = function(userMessage) {
-		console.log("## sendFromUser()");
-		who = "user";
-		wait = 10;
-		$timeout(function() {
-			send(who, userMessage)
-			getBotMessage(userMessage);
-		}, wait);
-		
+		if (count > 0) {
+			console.log("⚙ sendFromUser()");
+			if (guest_name == "" && count == 1) {
+				guest_name = toTitleCase(userMessage);
+			}
+			who = guest_name;
+			wait = 10;
+
+			$timeout(function() {
+				send(who, userMessage)
+				if (unknown_guest) {
+					findGuest(guest_name, guest_ip);
+				} else { 
+					getBotMessage(userMessage);
+				}
+			}, wait);
+		}
 	}
 
 
 
 	getBotMessage = function(userMessage) {
-		console.log("## getBotMessage");
+		console.log("⚙ getBotMessage");
 		// Runs when a user inputs a message
 		keyword_found = false;
 
 
 		for (from_chat_script in keyword_set)	{
-			for (i in keyword_set[from_chat_script]) {
-				for (to_chat in keyword_set[from_chat_script][i]) {
-					for(keyword in keyword_set[from_chat_script][i][to_chat]){
+				for (to_chat in keyword_set[from_chat_script]) {
+					for(keyword in keyword_set[from_chat_script][to_chat]){
 						if (to_chat != current_script._id){
-							if (userMessage.toUpperCase().includes(keyword_set[from_chat_script][i][to_chat][keyword].toUpperCase())){
-								console.log("@ keyword found");
+							keyword_to_search = keyword_set[from_chat_script][to_chat][keyword];
+							if (userMessage.toUpperCase().includes(keyword_to_search.toUpperCase())){
+								console.log("@ keyword found: " + keyword_to_search);
 								keyword_found = true;
 								if (!persist_keywords) {
 									key_to_delete = String(current_script._id)
@@ -93,7 +104,6 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 						}
 					}
 				}
-			}
 		}
 
 		if (!keyword_found){
@@ -122,14 +132,20 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 
 	sendToBot = function(parameter) {
-		console.log("## sendToBot()");
+		console.log("⚙ sendToBot()");
 		// Runs when an api call returns a response
 		who = "bot";
-		wait = 800;
+		wait = 200;
 		if (parameter){
 			bot_message = parameter;
 		} else {
-			bot_message = current_script.chats[script_count];
+			bot_thought = current_script.chats[script_count];
+			tilde_index = bot_thought.indexOf("~");
+			if (tilde_index > -1) {
+				bot_message = bot_thought.substr(0, tilde_index) + tilde_insert[0] + bot_thought.substr(tilde_index + 1, bot_thought.length);
+			} else {
+				bot_message = bot_thought;
+			}
 		}
 		$timeout(function() {
 			send(who, bot_message)
@@ -139,89 +155,9 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 	}
 
 
-	apiGET = function(model, key, value) {
-		console.log("## apiGET()");
 
-		persist_keywords = false;
-		script_count = 0;
 
-		if (key && value) {
-			url = "/api/" + model + "?" + key + "=" + value;
-		} else {
-			url = "/api/" + model;
-		}
-		
 
-		console.log("GET: " + url);
-
-		api_get = new XMLHttpRequest();
-		api_get.open("GET", url);
-		api_get.setRequestHeader("Content-type", "application/json");
-		api_get.send();
-
-		api_get.onload = function() {
-			if (api_get.status >= 200 && api_get.status < 400) {
-
-				api_response = JSON.parse(api_get.responseText);
-				numberOf = api_response.length;
-				randomScript = Math.floor((Math.random() * numberOf)); 
-				current_script = api_response[randomScript];
-				script_length = current_script.chats.length;
-				key = current_script._id;
-				keyword_set[key] = current_script.keywords;
-
-				if (current_script.special === 1) {
-					persist_keywords = true;
-				}
-				
-				for (from_chat_script in keyword_set)	{
-					for (i in keyword_set[from_chat_script]) {
-						for (to_chat in keyword_set[from_chat_script][i]) {
-							console.log("? Keywords from Chat [" + from_chat_script + "] (i)" + i + ":" + '\n' + "To Chat [" + to_chat + "]: " + keyword_set[from_chat_script][i][to_chat]);
-						}
-					}
-				}
-				console.log("-> Chats Loaded: " + current_script.chats)
-				sendToBot();
-
-			} else {
-						console.log("!! Status: " + api_get.status + ", but something went wrong");
-					}
-
-		};
-	};
-
-	apiPOST = function(body, model, key, value) {
-		console.log("## apiPOST()");
-
-		if (key && value) {
-			url = "/api/" + model + "?" + key + "=" + value;
-		} else {
-			url = "/api/" + model;
-		}
-		
-
-		console.log("POST: " + url + " body: " + body);
-
-		api_post = new XMLHttpRequest();
-		api_post.open("POST", url);
-		api_post.setRequestHeader("Content-Type", "application/json");
-		
-
-		api_post.send(body);
-
-		api_post.onload = function() {
-			if (api_post.status >= 200 && api_post.status < 400) {
-				console.log("!! Status: " + api_post.status)
-
-			} else {
-				console.log("!! Status: " + api_post.status + ", but something went wrong");
-			}
-
-		};
-	};
-
-start();
 
 
 });

@@ -1,18 +1,3 @@
-
-/*
-
-To Do:
-- - - - - -
-@media css
-add auth/auth to api
-add gui or chat interface for writing/reading db
-
-
-
-*/
-
-
-
 var express = require('express'),
 	mongoose = require('mongoose'),
 	pug = require('pug'),
@@ -27,56 +12,56 @@ if(process.env.ENV == 'ENV is Test'){
 } else if(process.env.ENV == 'staging'){
 	console.log("ENV is staging");
 	db = mongoose.connect(process.env.MONGODB_URI);
+} else if(process.env.ENV == 'production'){
+	console.log("ENV is production");
+	db = mongoose.connect(process.env.MONGODB_URI);
 } else {
-	console.log("ENV is not test or staging, probably dev");
+	console.log("ENV is not test, production, or staging, probably dev");
 	db = mongoose.connect('mongodb://localhost/pwxyz');
 }
 
+// MODELS:
 var Project = require('./models/projectModel');
 var Chat = require('./models/chatModel');
 var Script = require('./models/scriptModel');
+var Guest = require('./models/guestModel');
 
+// SET UP EXPRESS
 var app = express();
 app.set('view engine', 'pug')
 app.set('view options', { pretty: true })
-
-
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 8000;
 
 app.use(express.static(__dirname + '/public')); 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
+// ROUTES:
+// For API:
 projectRouter = require('./routes/projectRoutes')(Project)
 chatRouter = require('./routes/chatRoutes')(Chat)
 scriptRouter = require('./routes/scriptRoutes')(Script)
+guestRouter = require('./routes/guestRoutes')(Guest)
+
+
+
+// BOT:
+bot = require('./bot/bot');
 
 app.use('/api/projects', projectRouter);
 app.use('/api/chats', chatRouter);
 app.use('/api/scripts', scriptRouter);
+app.use('/api/guests', guestRouter);
 
+// For App:
 app.get('/', function(req, res){
-	var guest_ip = req.headers['x-forwarded-for'] || 
-     req.connection.remoteAddress || 
-     req.socket.remoteAddress ||
-     req.connection.socket.remoteAddress;
 
-	res.render('index', {
-	pretty: true,
+	startBot(req, res);
 
-	// Template variables
-	guest_ip: guest_ip,
-	pageTitle: 'Patrick Weaver!'
-	
-	})
 });
 
 app.get('/new', function(req, res){
 	res.sendFile(__dirname + '/views/new/index.html');
-});
-
-app.get('/p', function(req, res){
-
 });
 
 app.listen(port, function(){

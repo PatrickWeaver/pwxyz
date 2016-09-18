@@ -15,6 +15,8 @@ var scriptController = function(Script){
 
 	var get = function(req,res){
 		var query = {};
+
+		console.log(req.query);
 		// What can you search by in the URL?
 		if (req.query.special) {
 			query.special = req.query.special

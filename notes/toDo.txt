@@ -1,0 +1,14 @@
+Ideas:
+- - - - - - - 
+* Use special as a parameter?
+* Use Chat objects in array for Script Object, bot learns to say things people have said
+* Create Keyword object, share lists of Keywords between scripts
+* Search from list of names
+
+To Do:
+- - - - - -
+* @media css
+* add auth/auth to api
+* add gui or chat interface for writing/reading db
+* change apiGET to take mulitiple parameters
+* deal with when there is more than one guest returned
