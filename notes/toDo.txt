@@ -12,3 +12,5 @@ To Do:
 * add gui or chat interface for writing/reading db
 * change apiGET to take mulitiple parameters
 * deal with when there is more than one guest returned
+* allow insertion into chat strings
+* Fix one guest found

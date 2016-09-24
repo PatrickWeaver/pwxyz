@@ -2,7 +2,9 @@ apiGET = function(model, key, value) {
 	console.log("⚙ apiGET()");
 
 	persist_keywords = false;
-	script_count = 0;
+	if (model == "script"){
+		script_count = 0;
+	}
 
 	if (key && value) {
 		url = "/api/" + model + "?" + key + "=" + value;
@@ -68,7 +70,7 @@ guestsOnLoad = function(api_response, numberOf){
 	console.log("⚙ guestsOnLoad");
 	if (numberOf < 1) {
 		console.log("Zero guests found");
-		start();
+		newGuest();
 	} else if (numberOf == 1) {
 		console.log("One guest found");
 		names = []
@@ -100,7 +102,6 @@ guestsOnLoad = function(api_response, numberOf){
 	} else {
 		console.log("Many guests found");
 	}
-	start();
 }
 
 
@@ -127,6 +128,10 @@ apiPOST = function(body, model, key, value) {
 	api_post.onload = function() {
 		if (api_post.status >= 200 && api_post.status < 400) {
 			console.log("!! Status: " + api_post.status)
+			if (model == "guests"){
+				guest_id = JSON.parse(api_post.response)._id;
+				console.log("Guest ID: " + guest_id);
+			}
 
 		} else {
 			console.log("!! Status: " + api_post.status + ", but something went wrong");

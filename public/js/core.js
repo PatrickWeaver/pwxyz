@@ -14,6 +14,8 @@ console.log(guest_id);
 
 var tilde_insert = [];
 
+var last_chat;
+
 app.controller('mainController', function($scope, $http, $timeout, $location, $anchorScroll) {
 	$scope.formData = {};
 
@@ -51,6 +53,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		$location.hash('chat-' + count);
 		$anchorScroll();
 
+		last_chat = sentMessage;
 		count += 1;
 	}
 
@@ -67,7 +70,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 			$timeout(function() {
 				send(who, userMessage)
 				if (unknown_guest) {
-					findGuest(guest_name, guest_ip);
+					findGuest(guest_name, guest_ip)
 				} else { 
 					getBotMessage(userMessage);
 				}
@@ -81,7 +84,6 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		console.log("⚙ getBotMessage");
 		// Runs when a user inputs a message
 		keyword_found = false;
-
 
 		for (from_chat_script in keyword_set)	{
 				for (to_chat in keyword_set[from_chat_script]) {
@@ -150,6 +152,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		$timeout(function() {
 			send(who, bot_message)
 			script_count += 1;
+			console.log("******" + script_count);
 		}, wait);
 		
 	}
