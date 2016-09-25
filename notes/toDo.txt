@@ -14,3 +14,8 @@ To Do:
 * deal with when there is more than one guest returned
 * allow insertion into chat strings
 * Fix one guest found
+* Figure out if send from and send to need to be in chatEngine.js
+* log first chat before guest ID
+* rearrange $timeout in sendFromUser();
+* If IP matches but name doesn't, have bot ask about other names.
+* Log IP when I create a new guest

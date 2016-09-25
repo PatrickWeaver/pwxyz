@@ -6,7 +6,8 @@ var scriptModel = new Schema({
 	type: String,
 	description: String,
 	chats: Array,
-	keywords: Object
+	keywords: Object,
+	persist_keywords: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('Script', scriptModel);

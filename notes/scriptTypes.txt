@@ -2,8 +2,7 @@ Script Types
 
 Specials:
 - - - - - - - - -
-0: Start no name, ask for name
-1: Start no name, persist keywords
+1: Start no name
 2: Goodbye
 3: Projects
 4: Start multiple names
