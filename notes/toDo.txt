@@ -19,3 +19,5 @@ To Do:
 * rearrange $timeout in sendFromUser();
 * If IP matches but name doesn't, have bot ask about other names.
 * Log IP when I create a new guest
+* Figure out recursive TildeSearch
+* fix tilde search no "or"s

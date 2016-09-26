@@ -31,11 +31,6 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 	var guest_ip;
 
 
-	// Language
-	var negations = ["no", "nope", "negative"]
-
-
-
 	// * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^ 
 	// API:	
 	apiGET = function(model, key, value) {
@@ -61,7 +56,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 		api_get.onload = function() {
 			if (api_get.status >= 200 && api_get.status < 400) {
-				console.log("✅ Status: " + api_get.status);
+				console.log("✅ GET Status: " + api_get.status);
 				api_response = JSON.parse(api_get.responseText);
 
 				switch (model) {
@@ -113,7 +108,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 		api_post.onload = function() {
 			if (api_post.status >= 200 && api_post.status < 400) {
-				console.log("✅ Status: " + api_post.status)
+				console.log("✅ POST Status: " + api_post.status)
 				switch (model) {
 					case "chats":
 						// Chat API call
@@ -160,7 +155,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 		api_patch.onload = function() {
 			if (api_patch.status >= 200 && api_patch.status < 400) {
-				console.log("✅ Status: " + api_patch.status)
+				console.log("✅ PATCH Status: " + api_patch.status)
 				switch (model) {
 					case "chats":
 						// Chat API call
@@ -232,18 +227,40 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 			bot_message = parameter;
 		} else {
 			bot_thought = current_script.chats[script_count];
-			tilde_index = bot_thought.indexOf("~");
-			if (tilde_index > -1) {
-				bot_message = bot_thought.substr(0, tilde_index) + tilde_insert[0] + bot_thought.substr(tilde_index + 1, bot_thought.length);
-			} else {
-				bot_message = bot_thought;
-			}
+			tildeSearch(bot_thought)
 		}
 		$timeout(function() {
 			send(who, bot_message)
 			script_count += 1;
 		}, wait);
 	
+	}
+
+	tildeSearch = function(bot_thought){
+		tilde_index = bot_thought.indexOf("~");
+		if (tilde_index > -1) {
+			t_insert = "";
+			for (t in tilde_insert) {
+				alert("t: " + t + " t_i.len: " + tilde_insert.length + "ti: " + tilde_insert);
+				til = tilde_insert.length - 1;
+				if (t == til) {
+					alert("no or " + tilde_insert[t]);
+					t_insert += tilde_insert[t];
+				} else {
+					alert("or!! " + tilde_insert[t]);
+					t_insert += tilde_insert[t];
+					t_insert += " or ";
+					alert()
+				}
+			}
+			b_thought1 = bot_thought.substr(0, tilde_index);
+			b_thought2 = bot_thought.substr(tilde_index + 1, bot_thought.length);
+			bot_thought = b_thought1 + tilde_insert + b_thought2;
+		}
+		bot_message = bot_thought;
+
+
+
 	}
 
 	sendFromUser = function(userMessage) {
@@ -272,16 +289,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 				apiPATCH(JSON.stringify(patch_body), "guests", guest_id)
 				break;
 			case 4:
-				question = true;
-				for (word in negations) {
-					if (word.toUpperCase() == data.toUpperCase()) {
-						question = false;
-						break;
-					}
-				}
-				if (question == true){
-					guest_name = tilde_insert[0]
-				}
+				newGuest();
 				break;
 		}
 	}
@@ -306,7 +314,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 										console.log("🚫 Delete keywords from: " + key_to_delete);
 										delete keyword_set[key_to_delete];
 									}
-									apiGET("scripts", "_id", to_chat);
+									apiGET("scripts", "_id", to_script);
 									break
 								} else {
 									console.log("🔕 No keyword")
@@ -326,9 +334,8 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 				if (special != 2) {
 					// Go to pre-goodbye or goodbye script
 					console.log(" || On " + script_count + " of " + script_length + " in script. I am out of things to say.");
-					script_count = 0;
-					special = 3;
-					apiGET("scripts", "special", special)
+					special = 2;
+					getNewScript();
 				} else {
 					doneChatting = true;
 					who = "user";
@@ -348,6 +355,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		// Runs when apiGET() loads after calling script model
 		console.log("⚙ chooseScript()");
 
+		script_count = 0;
 		randomScript = Math.floor((Math.random() * api_response.length));
 		current_script = api_response[randomScript];
 		script_length = current_script.chats.length;
@@ -373,6 +381,10 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		getBotMessage();
 	}
 
+	getNewScript = function() {
+		apiGET("scripts", "special", special);
+	}
+
 	// * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^ 
 	// Guest: 
 
@@ -383,22 +395,9 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		if (guests_found === 0) {
 			// 0 guests found at IP address
 			newGuest();
-		} else if (guests_found === 1) {
+		} else{
 			// 1 guest found at IP address
-			askGuestIfName(api_response[0]);
-		} else {
-			// Other guests found at IP address
-			could_be_new_guest = true;
-			for (g in api_response) {
-				guest = api_response[g];
-				if (guest_name.toUpperCase() == guest.name.toUpperCase()) {
-					returningGuest(guest);
-					break;
-				}
-			}
-			if (could_be_new_guest) {
-				newGuest();
-			}
+			askGuestIfName(api_response);
 		}
 	}
 
@@ -424,15 +423,24 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		console.log("⚙ askGuestForName()")
 		console.log("👤 Guest ID: " + guest_id);
 		special = 1;
-		apiGET("scripts", "special", special);
+		getNewScript();
 		
 	}
 
 	askGuestIfName = function(guest) {
 		console.log("⚙ askGuestIfName()")
-		tilde_insert.push(guest.name);
-		special = 4;
-		apiGET("scripts", "special", special);
+		if (guest.length === 1){
+			tilde_insert.push(guest.name);
+			special = 4;
+			getNewScript();
+		} else {
+			for (g in guest) {
+				tilde_insert.push(guest[g].name);
+			}
+			alert(tilde_insert);
+			special = 8;
+			getNewScript();
+		}
 	}
 
 	returningGuest = function(guest){
