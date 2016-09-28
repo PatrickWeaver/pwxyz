@@ -34,13 +34,14 @@ var guestController = function(Guest){
 
 
 			if (req.query.ip_addresses) {
-				query.ip_addresses = req.query.ip_addresses
+				query.ip_addresses = req.query.ip_addresses;
+				if (req.query.name) {
+					query.name = req.query.name;
+				}
 			} else if (req.query.guest_id) {
 				query.guest_id = req.query.guest_id
 			} else if (req.query._id) {
 				query._id = req.query._id
-			} else if (req.query.names) {
-				query.names = req.query.names
 			}
 
 			console.log(query);

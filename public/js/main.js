@@ -33,7 +33,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 	// * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^  * ^ * ^ 
 	// API:	
-	apiGET = function(model, key, value) {
+	apiGET = function(model, key, value, key2, value2) {
 		console.log("⚙ apiGET()");
 		console.log("Model: " + model);
 
@@ -41,9 +41,13 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		if (model == "script"){
 			script_count = 0;
 		}
-
-		if (key && value) {
+		parameters = 0;
+		if (key && value && key2 && value2){
+			url = "/api/" + model + "?" + key + "=" + value + "&" + key2 + "=" + value2;
+			parameters = 2;
+		} else if (key && value) {
 			url = "/api/" + model + "?" + key + "=" + value;
+			parameters = 1;
 		} else {
 			url = "/api/" + model;
 		}
@@ -65,7 +69,12 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 						break;
 					case "guests":
 						// Guest API call
-						findGuest(api_response);
+						if (parameters > 1) {
+							guest_id = api_response[0]._id;
+							alert(guest_id);
+						} else {
+							findGuest(api_response);
+						}
 						break;
 					case "projects":
 						// Project API call
@@ -116,7 +125,9 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 					case "guests":
 						// Guest API call
 						guest_id = JSON.parse(api_post.response)._id;
-						askGuestForName();
+						if (guest_name = "") {
+							askGuestForName();
+						}
 						break;
 					case "projects":
 						// Project API call
@@ -239,23 +250,24 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 	tildeSearch = function(bot_thought){
 		tilde_index = bot_thought.indexOf("~");
 		if (tilde_index > -1) {
-			t_insert = "";
+			var ask_if = "";
 			for (t in tilde_insert) {
-				alert("t: " + t + " t_i.len: " + tilde_insert.length + "ti: " + tilde_insert);
-				til = tilde_insert.length - 1;
-				if (t == til) {
-					alert("no or " + tilde_insert[t]);
-					t_insert += tilde_insert[t];
-				} else {
-					alert("or!! " + tilde_insert[t]);
-					t_insert += tilde_insert[t];
-					t_insert += " or ";
-					alert()
+				if (t == tilde_insert.length - 1) {
+					if (tilde_insert.length > 2) {
+						ask_if += ", or ";
+					} else {
+						ask_if += " or ";
+					}
+				} else if (t == 0) {
+					ask_if += "";
+				} else {	
+					ask_if += ", ";
 				}
+				ask_if += tilde_insert[t];
 			}
 			b_thought1 = bot_thought.substr(0, tilde_index);
 			b_thought2 = bot_thought.substr(tilde_index + 1, bot_thought.length);
-			bot_thought = b_thought1 + tilde_insert + b_thought2;
+			bot_thought = b_thought1 + ask_if + b_thought2;
 		}
 		bot_message = bot_thought;
 
@@ -281,12 +293,16 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 	saveUserData = function(data) {
 		console.log("⚙ saveUserData()");
-		switch(special) {
+		switch(current_script.special) {
 			case 1:
 				guest_name = data;
 				patch_body = {}
 				patch_body.name = guest_name;
 				apiPATCH(JSON.stringify(patch_body), "guests", guest_id)
+				break;
+			case 3:
+				guest_name = data;
+				newGuestWithName();
 				break;
 			case 4:
 				newGuest();
@@ -296,9 +312,19 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 	getBotMessage = function(userMessage) {
 		console.log("⚙ getBotMessage");
+		tilde_found = false;
 		keyword_found = false;
 		if (userMessage){
 			// Runs when a user inputs a message
+			for (t in tilde_insert) {
+				if (userMessage == tilde_insert[t]){
+					switch(current_script.special){
+						case 3:
+							apiGET("guests", "ip_addresses", "guest_ip", "name", "guest_name");
+							break;
+					}
+				}
+			}
 			
 
 			for (from_script in keyword_set)	{
@@ -407,7 +433,23 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		new_guest_ip.push(guest_ip);
 		new_guest = {
 			"ip_addresses": new_guest_ip,
-			"last_chat": last_chat
+		}
+		console.log("Saving Guest:"
+			);
+		for (g in new_guest) {
+			console.log(new_guest[g]);
+		}
+		apiPOST(JSON.stringify(new_guest), "guests");
+		unknown_guest = false;
+	}
+
+	newGuestWithName = function(){
+		console.log("⚙ newGuestWithName()")
+		new_guest_ip = []
+		new_guest_ip.push(guest_ip);
+		new_guest = {
+			"ip_addresses": new_guest_ip,
+			"name": guest_name
 		}
 		console.log("Saving Guest:"
 			);
@@ -437,7 +479,6 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 			for (g in guest) {
 				tilde_insert.push(guest[g].name);
 			}
-			alert(tilde_insert);
 			special = 8;
 			getNewScript();
 		}
