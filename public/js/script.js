@@ -1,9 +1,11 @@
 // Script
 
-scriptResponse = function(api_response) {
-	console.log("⚙ scriptResponse()");
-
+scriptGET = function(api_response) {
+	console.log("⚙ scriptGET()");
 	script_count = 0;
+
+
+	/*
 	randomScript = Math.floor((Math.random() * api_response.length));
 	current_script = api_response[randomScript];
 	script_length = current_script.chats.length;
@@ -27,4 +29,5 @@ scriptResponse = function(api_response) {
 	console.log("📋 Chats loaded: " + current_script.chats);
 
 	getBotMessage();
+	*/
 }

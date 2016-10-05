@@ -31,19 +31,19 @@ apiGET = function(model, parameters) {
 			switch (model) {
 				case "chats":
 					// Chat API call
-					chatResponse(api_response);
+					//chatResponse(api_response);
 					break;
 				case "guests":
 					// Guest API call
-					guestResponse(api_response);
+					guestGET(api_response);
 					break;
 				case "projects":
 					// Project API call
-					proejctResponse(api_response);
+					//proejctResponse(api_response);
 					break;
 				case "scripts":
 					// Script API call
-					scriptResponse(api_response);
+					scriptGET(api_response);
 					break;
 				default:
 					console.log("Error no model");
@@ -85,10 +85,10 @@ apiPOST = function(body, model, item) {
 					break;
 				case "guests":
 					// Guest API call
-					guest_id = JSON.parse(api_post.response)._id;
+					/*guest_id = JSON.parse(api_post.response)._id;
 					if (guest_name = "") {
 						askGuestForName();
-					}
+					}*/
 					break;
 				case "projects":
 					// Project API call

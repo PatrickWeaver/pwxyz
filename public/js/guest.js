@@ -1,5 +1,34 @@
 // Guest
 
+
+guestGET = function(api_response) {
+	console.log("⚙ guestGET()");
+
+	number_of_guests = api_response.length;
+	console.log(number_of_guests + " possible guests:")
+	for (guest in api_response) {
+		g = api_response[guest];
+		console.log(guest + ". Name: " + g.name + ", Id: " + g._id);
+		possible_guests.push(g);
+		
+	}
+	findGuestName();
+}
+
+
+findGuestName = function() {
+	console.log("⚙ findGuestName()");
+
+	for (guest in possible_guests) {
+		tilde_insert.push(possible_guests[guest].name);
+	}
+	special = 1;
+	apiGET("scripts", [["special", special]]);
+}
+
+
+
+/*
 guestResponse = function(api_response) {
 	console.log("⚙ guestResponse()");
 
@@ -90,3 +119,4 @@ askGuestForName = function() {
 returningGuest = function(guest){
 	console.log("⚙ returningGuest()")
 }
+*/

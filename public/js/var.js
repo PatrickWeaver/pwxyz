@@ -1,4 +1,25 @@
-	var count = 0;
+
+
+// Chat:
+var count = 0;
+var tilde_insert = [];
+
+
+// Guest:
+var guest_id = "";
+var guest_name = "";
+var possible_guests = [];
+
+
+
+
+	
+
+
+
+
+
+/*
 	var doneChatting = false;
 	var keyword_set = {};
 	var tilde_insert = [];
@@ -19,3 +40,5 @@
 
 	var unknown_guest = true;
 	var possible_guests = [];
+
+	*/

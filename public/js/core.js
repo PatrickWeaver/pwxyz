@@ -30,9 +30,20 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 
 
+	sendFromUser = function(userMessage) {
+		if (count >= 0) {
+			console.log("⚙ sendFromUser()");
+			who = guest_name;
+			wait = 10;
 
+			//saveUserData(userMessage);
 
-
+			$timeout(function() {
+				send(who, userMessage)
+				//getBotMessage(userMessage);
+			}, wait);
+		}
+	}
 
 
 	send = function(who, sentMessage) {
@@ -70,6 +81,15 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		count += 1;
 	}
 
+});
+
+/*
+
+
+
+
+
+
 	sendToBot = function(parameter) {
 		console.log("⚙ sendToBot()");
 		// Runs after scriptsOnLoad() processes script API call
@@ -81,7 +101,6 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 			bot_thought = current_script.chats[script_count];
 		}
 		tildeSearch(bot_thought, who, wait)
-	
 	}
 
 	tildeSearch = function(bot_thought, who, wait){
@@ -115,7 +134,6 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 			script_count += 1;
 		}, wait);
 
-
 	}
 
 	sendFromUser = function(userMessage) {
@@ -124,16 +142,16 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 			who = guest_name;
 			wait = 10;
 
-			saveUserData(userMessage);
+			//saveUserData(userMessage);
 
 			$timeout(function() {
 				send(who, userMessage)
-				getBotMessage(userMessage);
+				//getBotMessage(userMessage);
 			}, wait);
 		}
 	}
 
-
+	
 	saveUserData = function(data) {
 		console.log("⚙ saveUserData()");
 		switch(current_script.special) {
@@ -152,6 +170,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 				break;
 		}
 	}
+	
 
 	getBotMessage = function(userMessage) {
 		console.log("⚙ getBotMessage");
@@ -238,15 +257,6 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
 });
+*/
+
