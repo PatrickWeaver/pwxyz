@@ -3,13 +3,7 @@ Script Types
 Specials:
 - - - - - - - - -
 1: Start no name
-2: Goodbye
-3: Start, thought wrong name
-4: Start one other name
-5: Start one name
-6: Projects
-7: Don't want to give name
-8: Start multiple other names
+2: Start names
 
 
 Types:

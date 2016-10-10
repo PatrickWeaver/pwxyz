@@ -3,6 +3,7 @@
 // Chat:
 var count = 0;
 var tilde_insert = [];
+//var bot_message;
 
 
 // Guest:
@@ -11,7 +12,10 @@ var guest_name = "";
 var possible_guests = [];
 
 
-
+// Script:
+var current_script;
+var script_length;
+var keyword_set = {};
 
 	
 
