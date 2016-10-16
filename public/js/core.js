@@ -29,6 +29,7 @@ botChat = function() {
 	  console.log("Script Count: " + script_count + ", of Script Length: " + script_length);
 		if (script_count < script_length){
 			send("bot", bot_message);
+			script_count += 1;
 		}
 	}).catch(function(error) {
 	  console.log("⚙ tildeReplace() Resolve, Error: " + error);
@@ -41,6 +42,7 @@ botChat = function() {
 
 var tildeReplace = function(bot_message) {
 	console.log("⚙ tildeReplace(" + bot_message + ")");
+	console.log("Tilde Insert: [" + tilde_insert + "]");
   return new Promise(function(resolve, reject) {
     // this will throw, x does not exist
     console.log("* " + tilde_insert);
@@ -178,28 +180,36 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 					break;
 				}
 			}
+			tilde_insert = [];
 
 			if (tilde_found != "") {
 
 				switch (special) {
 					case 2:
-						var found_guest;
-						for (guest in possible_guests) {
-							if (possible_guests[guest].name === tilde_found){
-								found_guest = possible_guests[guest];
-								guest_name = found_guest.name;
-								guest_id = found_guest.id;
-								break;
+						if (!guest_id){
+							for (guest in possible_guests) {
+								if (possible_guests[guest].name === tilde_found){
+									guest_name = possible_guests[guest].name;
+									guest_id = possible_guests[guest].id;
+									break;
+								}
 							}
+							tilde_insert = [guest_name];
 						}
-						if (found_guest) {
-							special = 6;
-							apiGET("scripts", [["special", special]]);
-						}
+						botChat();
 						break;
-
 					default:
 							break;
+				}
+			} else {
+				if (script_count >= script_length) {
+					switch (special) {
+						case 2:
+							special = 5;
+							apiGET("scripts", [["special", special]])
+					}
+				} else {
+					botChat();
 				}
 			}
 
@@ -209,7 +219,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 		}
 
-		tilde_insert = [];
+		
 	}
 
 

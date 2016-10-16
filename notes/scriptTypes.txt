@@ -4,6 +4,11 @@ Specials:
 - - - - - - - - -
 1: Start no name
 2: Start names
+3: Wrong Name
+4: Goodbye
+5: General start with guest id
+6: Project
+7: Won't tell name
 
 
 Types:
