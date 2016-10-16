@@ -25,7 +25,7 @@ botChat = function() {
 	bot_message = current_script.chats[script_count]
 
 	tildeReplace(bot_message).then(function(bot_message) {
-	  console.log("⚙ tildeReplace() Resolve: Success");
+	  console.log("✔️ tildeReplace() Resolve: Success");
 	  console.log("Script Count: " + script_count + ", of Script Length: " + script_length);
 		if (script_count < script_length){
 			send("bot", bot_message);
@@ -65,7 +65,6 @@ var tildeReplace = function(bot_message) {
 			b_thought2 = bot_message.substr(tilde_index + 1, bot_message.length);
 			bot_message = b_thought1 + ask_if + b_thought2;
 		}
-		console.log("### " + bot_message);
     resolve(bot_message);
   });
 };
@@ -92,6 +91,10 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 			//saveUserData(userMessage);
 			send(who, userMessage);
+
+			$timeout(function() {
+				getBotMessage(userMessage);
+			}, 100);
 		}
 	}
 
@@ -140,8 +143,74 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 	getBotMessage = function(userMessage) {
 		console.log("⚙ getBotMessage");
 
-		tilde_found = false;
+		tilde_found = "";
 		keyword_found = false;
+
+		if (userMessage) {
+			for (from_script in keyword_set)	{
+				for (to_script in keyword_set[from_script]) {
+					if (to_script != current_script._id){
+						for(keyword in keyword_set[from_script][to_script]){
+							keyword_to_search = keyword_set[from_script][to_script][keyword];
+							if (userMessage.toUpperCase().includes(keyword_to_search.toUpperCase())){
+								console.log("🔔 keyword found: " + keyword_to_search);
+								keyword_found = true;
+								if (!current_script.persist_keywords) {
+									key_to_delete = String(current_script._id)
+									console.log("🚫 Delete keywords from: " + key_to_delete);
+									delete keyword_set[key_to_delete];
+								}
+								apiGET("scripts", [["_id", to_script]]);
+								break
+							} else {
+								console.log("🔕 No keyword")
+							}
+						}
+					}
+				}
+			}
+
+			for (t in tilde_insert) {
+				keyword_to_search = tilde_insert[t];
+				if (userMessage.toUpperCase().includes(keyword_to_search.toUpperCase())){
+					console.log("🔔 tilde keyword found: " + keyword_to_search);
+					tilde_found = keyword_to_search;
+					break;
+				}
+			}
+
+			if (tilde_found != "") {
+
+				switch (special) {
+					case 2:
+						var found_guest;
+						for (guest in possible_guests) {
+							if (possible_guests[guest].name === tilde_found){
+								found_guest = possible_guests[guest];
+								guest_name = found_guest.name;
+								guest_id = found_guest.id;
+								break;
+							}
+						}
+						if (found_guest) {
+							special = 6;
+							apiGET("scripts", [["special", special]]);
+						}
+						break;
+
+					default:
+							break;
+				}
+			}
+
+
+
+
+
+		}
+
+		tilde_insert = [];
+	}
 
 
 		/*
@@ -180,29 +249,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 				}
 			}
 
-			for (from_script in keyword_set)	{
-					for (to_script in keyword_set[from_script]) {
-						if (to_script != current_script._id){
-							for(keyword in keyword_set[from_script][to_script]){
-								keyword_to_search = keyword_set[from_script][to_script][keyword];
-								if (userMessage.toUpperCase().includes(keyword_to_search.toUpperCase())){
-									console.log("🔔 keyword found: " + keyword_to_search);
-									keyword_found = true;
-									if (!persist_keywords) {
-										key_to_delete = String(current_script._id)
-										console.log("🚫 Delete keywords from: " + key_to_delete);
-										delete keyword_set[key_to_delete];
-									}
-									apiGET("scripts", [["_id", to_script]]);
-									break
-								} else {
-									console.log("🔕 No keyword")
-								}
-							}
-						}
-					}
-				}
-			}
+
 			if (!script_path){
 				alert("script path");
 				if (!keyword_found){
@@ -226,7 +273,6 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 			}
 		}
 		*/
-	}
 
 });
 

@@ -6,6 +6,7 @@ scriptGET = function(api_response) {
 
 	randomScript = Math.floor((Math.random() * api_response.length));
 	current_script = api_response[randomScript];
+	special = current_script.special;
 	script_length = current_script.chats.length;
 	keyword_set[current_script._id] = current_script.keywords;
 
