@@ -12,8 +12,8 @@ html(lang="en" ng-app="Chats")
         )
           div(class="chat-wrapper").
             <p class='chat-{{chat.user_type}}' id='chat-{{chat.id}}'> 
-            {{chat.name}} at {{chat.timestamp}}:<br>
-            {{chat.message}}
+            [{{chat.special}}]  {{chat.name}} at {{chat.timestamp}}:<br>
+            <span ng-bind-html="chat.message | unsafe"></span>
             </p>
             <div class="avatar avatar-{{chat.user_type}}"></div>
     div(id="compose-area")

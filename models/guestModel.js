@@ -2,7 +2,6 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var guestModel = new Schema({
-	guest_id: String,
 	name: String,
 	ip_addresses: Array,
 	last_chat: String,

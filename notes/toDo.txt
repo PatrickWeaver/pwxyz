@@ -7,15 +7,23 @@ Ideas:
 
 To Do:
 - - - - - -
-* @media css
-* add auth/auth to api
-* add gui or chat interface for writing/reading db
-* change apiGET to take mulitiple parameters
-* deal with when there is more than one guest returned
-* allow insertion into chat strings
-* Fix one guest found
-* Figure out if send from and send to need to be in chatEngine.js
-* rearrange $timeout in sendFromUser();
-* Figure out recursive TildeSearch
 
-* Make it stop logging two guests from special 3
+Someday:
+~ ~ ~ ~ ~ ~ ~ ~ ~ 
+* @media css
+* add gui or chat interface for writing/reading db
+* Figure out recursive TildeSearch
+* Make a template language to replace tilde_index
+
+Soon:
+~ ~ ~ ~ ~ ~ ~ ~ ~ 
+* add auth/auth to api
+* populate database
+* copy database to production
+
+Now:
+~ ~ ~ ~ ~ ~ ~ ~ ~ 
+* Add "yes" keywords to special 2
+* Fix no persistent keywords
+* Add reset to intro
+* Reset after project

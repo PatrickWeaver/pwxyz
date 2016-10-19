@@ -17,8 +17,29 @@ var projectController = function(Project){
 	var get = function(req,res){
 		var query = {};
 
+		/*
+
+
+		var query = {};
+		console.log(req.query);
+		if (req.query.type == "find") {
+			console.log("find a guest!!");
+			if (req.query.guest_name) {
+				query.name = req.query.guest_name;
+				if (req.query.guest_ip) {
+					query.ip_addresses = req.query.guest_ip;
+				}
+			}
+			console.log(query);
+			findAGuest(query, req, res);
+
+
+			*/
+
 		if (req.query.media) {
-			query.media = req.query.media
+			query.media = req.query.media;
+		} else if (req.query.name) {
+			query.name = req.query.name;
 		}
 		Project.find(query, function(err, projects){
 			if(err){

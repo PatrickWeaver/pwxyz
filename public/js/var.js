@@ -7,6 +7,7 @@ var tilde_insert = [];
 
 
 // Guest:
+var guest_ip = "";
 var guest_id = "";
 var guest_name = "";
 var possible_guests = [];

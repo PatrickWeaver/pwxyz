@@ -46,8 +46,11 @@ function listen(e) {
   if (chat) {
     pauseListening();
     message = composer.value;
+    safe_message = message.replace(/<|>|\(|\)|"|'/g, '');
+
+
     composer.value = "";
-    sendFromUser(message);
+    sendFromUser(safe_message);
     message = "";
     listenFor();
   }

@@ -38,13 +38,14 @@ apiGET = function(model, parameters) {
 					guestGET(api_response);
 					break;
 				case "projects":
-					// Project API call
-					//proejctResponse(api_response);
+					// Projects API call
+					projectGET(api_response);
 					break;
 				case "scripts":
 					// Script API call
 					scriptGET(api_response);
 					break;
+
 				default:
 					console.log("Error no model");
 			}

@@ -45,35 +45,79 @@ var tildeReplace = function(bot_message) {
 	console.log("Tilde Insert: [" + tilde_insert + "]");
   return new Promise(function(resolve, reject) {
     // this will throw, x does not exist
-    console.log("* " + tilde_insert);
-    tilde_index = bot_message.indexOf("~");
-		if (tilde_index > -1) {
-			var ask_if = "";
-			for (t in tilde_insert) {
-				if (t == tilde_insert.length - 1) {
-					if (tilde_insert.length > 2) {
-						ask_if += ", or ";
-					} else if (tilde_insert.length > 1) {
-						ask_if += " or ";
+    if (tilde_insert.type) {
+    	switch (tilde_insert.type) {
+    		case "project list":
+    			for (t in tilde_insert) {
+    				tilde_index = bot_message.indexOf("~");
+    				if (tilde_index > -1) {
+    					test_http = tilde_insert[t].toString();
+    					if (test_http.substr(0,4) === "http"){
+    						insert = "<a href='" + test_http + "'>" + test_http + "</a>";
+    					} else {
+    						insert = test_http;
+    					}
+
+
+
+    					bot_message = bot_message.substr(0, tilde_index) + insert + bot_message.substr(tilde_index + 1, bot_message.length);
+    				}
+    			}
+    			break;
+    		default:
+    			console.log("Error: no tilde_insert type.");
+    			break;
+    	}
+    } else {
+	    tilde_index = bot_message.indexOf("~");
+			if (tilde_index > -1) {
+				insert = "";
+				how_many = tilde_insert.length - 1;
+				for (t in tilde_insert) {
+					insert += tilde_insert[t];
+					if (t < how_many - 1) {
+						insert += ", "
+					} else if (t < how_many) {
+						if (t != 0){
+							insert += ",";
+						}
+						insert += " or ";
 					}
-				} else if (t == 1) {
-					ask_if += "";
-				} else {	
-					ask_if += ", ";
 				}
-				ask_if += tilde_insert[t];
+				bot_message = bot_message.substr(0, tilde_index) + insert + bot_message.substr(tilde_index + 1, bot_message.length);
 			}
-			b_thought1 = bot_message.substr(0, tilde_index);
-			b_thought2 = bot_message.substr(tilde_index + 1, bot_message.length);
-			bot_message = b_thought1 + ask_if + b_thought2;
 		}
     resolve(bot_message);
   });
 };
 
+saveUserData = function(data) {
+	console.log("⚙ saveUserData()");
+	switch(special) {
+		case 1:
+		case 3:
+			apiPOST(
+			JSON.stringify({
+				"ip_addresses": [guest_ip],
+				"name": toTitleCase(data)
+			}), "guests"
+		)
+			break;
+		case 4:
+			newGuest();
+			break;
+	}
+}
+
 
 
 var app = angular.module('Chats', []);
+
+app.filter('unsafe', function($sce) {
+	    return function(val) {
+	        return $sce.trustAsHtml(val);
+	    };
+	});
 
 app.controller('mainController', function($scope, $http, $timeout, $location, $anchorScroll) {
 
@@ -93,6 +137,9 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 			//saveUserData(userMessage);
 			send(who, userMessage);
+
+
+			saveUserData(userMessage);
 
 			$timeout(function() {
 				getBotMessage(userMessage);
@@ -128,7 +175,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		// Push to browser
 		$timeout(function() {
 			$scope.chats.push({
-				id: count, name: who, user_type: user_type, timestamp: time_sent, message: sentMessage, count: count
+				id: count, name: who, user_type: user_type, timestamp: time_sent, message: sentMessage, count: count, special: special
 			});
 			$location.hash('chat-' + count);
 			$anchorScroll();
@@ -171,9 +218,12 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 					}
 				}
 			}
+			if (keyword_found){
+				return;
+			}
 
 			for (t in tilde_insert) {
-				keyword_to_search = tilde_insert[t];
+				keyword_to_search = tilde_insert[t].toString();
 				if (userMessage.toUpperCase().includes(keyword_to_search.toUpperCase())){
 					console.log("🔔 tilde keyword found: " + keyword_to_search);
 					tilde_found = keyword_to_search;
@@ -182,8 +232,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 			}
 			tilde_insert = [];
 
-			if (tilde_found != "") {
-
+			if (!keyword_found && tilde_found != "") {
 				switch (special) {
 					case 2:
 						if (!guest_id){
@@ -196,195 +245,33 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 							}
 							tilde_insert = [guest_name];
 						}
+
 						botChat();
+						break;
+					case 8:
+						apiGET("projects", [["name", tilde_found]]);
 						break;
 					default:
 							break;
 				}
 			} else {
 				if (script_count >= script_length) {
+					console.log("Script done, getting new script.")
 					switch (special) {
 						case 2:
 							special = 5;
 							apiGET("scripts", [["special", special]])
+							break;
+						case 5:
+							apiGET("projects");
+							break;
 					}
 				} else {
 					botChat();
 				}
 			}
-
-
-
-
-
-		}
-
-		
+		}	
 	}
-
-
-		/*
-		
-		script_path = false;
-		if (userMessage){
-			// Runs when a user inputs a message
-			for (t in tilde_insert) {
-				if (userMessage == tilde_insert[t]){
-					tilde_found = true;
-					switch(current_script.special){
-						case 8:
-							script_path = true;
-							alert("guest path");
-							apiGET("guests", [["ip_addresses", guest_ip], ["name", guest_name]]);
-							break;
-					}
-				}
-				if (tilde_found == true){
-					break;
-				}
-			}
-
-			tilde_insert = [];
-
-			total_wait = 0;
-			while(guest_id == ""){
-				wait = 500;
-
-				$timeout(function() {
-					console.log("waiting . . .");
-				}, wait);
-				wait += 500;
-				if (total_wait > 4000) {
-					break;
-				}
-			}
-
-
-			if (!script_path){
-				alert("script path");
-				if (!keyword_found){
-
-				if (script_length > script_count) {
-					console.log(" || On " + script_count + " of " + script_length + " in script.");
-					sendToBot();
-				} else {
-					if (special != 2) {
-						// Go to pre-goodbye or goodbye script
-						console.log(" || On " + script_count + " of " + script_length + " in script. I am out of things to say.");
-						special = 2;
-						apiGET("scripts", [["special", special]]);
-					} else {
-						doneChatting = true;
-						who = "user";
-						console.log("else else " + script_count + " of " + script_length + " Special: " + special)
-					}
-					
-				}
-			}
-		}
-		*/
-
 });
 
-
-
-
-
-
-
-
-
-/*
-
-
-
-
-
-
-	sendToBot = function(parameter) {
-		console.log("⚙ sendToBot()");
-		// Runs after scriptsOnLoad() processes script API call
-		who = "bot";
-		wait = 200;
-		if (parameter){
-			bot_message = parameter;
-		} else {
-			bot_thought = current_script.chats[script_count];
-		}
-		tildeSearch(bot_thought, who, wait)
-	}
-
-	tildeSearch = function(bot_thought, who, wait){
-		console.log("⚙ tildeSearch()");
-		console.log("* " + tilde_insert);
-		tilde_index = bot_thought.indexOf("~");
-		if (tilde_index > -1) {
-			var ask_if = "";
-			for (t in tilde_insert) {
-				if (t == tilde_insert.length - 1) {
-					if (tilde_insert.length > 2) {
-						ask_if += ", or ";
-					} else if (tilde_insert.length > 1) {
-						ask_if += " or ";
-					}
-				} else if (t == 1) {
-					ask_if += "";
-				} else {	
-					ask_if += ", ";
-				}
-				ask_if += tilde_insert[t];
-			}
-			b_thought1 = bot_thought.substr(0, tilde_index);
-			b_thought2 = bot_thought.substr(tilde_index + 1, bot_thought.length);
-			bot_thought = b_thought1 + ask_if + b_thought2;
-		}
-		bot_message = bot_thought;
-
-		$timeout(function() {
-			send(who, bot_message)
-			script_count += 1;
-		}, wait);
-
-	}
-
-	sendFromUser = function(userMessage) {
-		if (count > 0) {
-			console.log("⚙ sendFromUser()");
-			who = guest_name;
-			wait = 10;
-
-			//saveUserData(userMessage);
-
-			$timeout(function() {
-				send(who, userMessage)
-				//getBotMessage(userMessage);
-			}, wait);
-		}
-	}
-
-	
-	saveUserData = function(data) {
-		console.log("⚙ saveUserData()");
-		switch(current_script.special) {
-			case 1:
-				guest_name = data;
-				patch_body = {}
-				patch_body.name = guest_name;
-				apiPATCH(JSON.stringify(patch_body), "guests", guest_id)
-				break;
-			case 3:
-				guest_name = data;
-				newGuestWithName();
-				break;
-			case 4:
-				newGuest();
-				break;
-		}
-	}
-	
-
-
-
-});
-*/
 
