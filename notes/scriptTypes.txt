@@ -9,8 +9,9 @@ Specials:
 5: General start with guest id
 6: Project
 7: Won't tell name
-8: Listing projects
+8: Listing specific projects
 9: Specific Project
+10: Listing project medias
 
 
 Types:

@@ -53,7 +53,7 @@ var tildeReplace = function(bot_message) {
     				if (tilde_index > -1) {
     					test_http = tilde_insert[t].toString();
     					if (test_http.substr(0,4) === "http"){
-    						insert = "<a href='" + test_http + "'>" + test_http + "</a>";
+    						insert = "<a href='" + test_http + "' target='blank'>" + test_http + "</a>";
     					} else {
     						insert = test_http;
     					}
@@ -196,6 +196,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 		keyword_found = false;
 
 		if (userMessage) {
+			console.log("🔍 Checking for script keywords.");
 			for (from_script in keyword_set)	{
 				for (to_script in keyword_set[from_script]) {
 					if (to_script != current_script._id){
@@ -204,11 +205,6 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 							if (userMessage.toUpperCase().includes(keyword_to_search.toUpperCase())){
 								console.log("🔔 keyword found: " + keyword_to_search);
 								keyword_found = true;
-								if (!current_script.persist_keywords) {
-									key_to_delete = String(current_script._id)
-									console.log("🚫 Delete keywords from: " + key_to_delete);
-									delete keyword_set[key_to_delete];
-								}
 								apiGET("scripts", [["_id", to_script]]);
 								break
 							} else {
@@ -222,12 +218,23 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 				return;
 			}
 
+			console.log("🔍 Checking for tilde keywords.");
 			for (t in tilde_insert) {
 				keyword_to_search = tilde_insert[t].toString();
 				if (userMessage.toUpperCase().includes(keyword_to_search.toUpperCase())){
 					console.log("🔔 tilde keyword found: " + keyword_to_search);
 					tilde_found = keyword_to_search;
 					break;
+				}
+				if (tilde_insert.length === 1){
+					console.log("🔍 Checking for yes keywords.");
+					for (y in yes){
+						if (userMessage.toUpperCase().includes(yes[y].toUpperCase())){
+							console.log("🔔 yes keyword found: " + keyword_to_search);
+							tilde_found = keyword_to_search;
+							break;
+						}
+					}
 				}
 			}
 			tilde_insert = [];
@@ -250,6 +257,9 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 						break;
 					case 8:
 						apiGET("projects", [["name", tilde_found]]);
+						break;
+					case 10:
+						apiGET("projects", [["media", tilde_found]]);
 						break;
 					default:
 							break;

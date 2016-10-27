@@ -18,6 +18,9 @@ var current_script;
 var script_length;
 var keyword_set = {};
 
+// Language:
+var yes = ["yes", "ya", "yeah", "yup", "ok"];
+
 	
 
 

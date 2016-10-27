@@ -14,6 +14,7 @@ Someday:
 * add gui or chat interface for writing/reading db
 * Figure out recursive TildeSearch
 * Make a template language to replace tilde_index
+* Scramble input to test for typos, "did you mean?"
 
 Soon:
 ~ ~ ~ ~ ~ ~ ~ ~ ~ 
@@ -24,6 +25,6 @@ Soon:
 Now:
 ~ ~ ~ ~ ~ ~ ~ ~ ~ 
 * Add "yes" keywords to special 2
-* Fix no persistent keywords
 * Add reset to intro
 * Reset after project
+* When it doesn't know what to do, say that it didn't understand

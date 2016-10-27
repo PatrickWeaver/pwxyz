@@ -5,6 +5,20 @@ projectGET = function(api_response) {
 
 	switch (special){
 		case 5:
+			tilde_insert = [];
+			for (p in api_response){
+				if (api_response[p].media){
+					for (m in api_response[p].media){
+						if (tilde_insert.indexOf(api_response[p].media[m]) === -1){
+							tilde_insert.push(api_response[p].media[m]);
+						}
+					}
+				}
+			}
+			special = 10;
+			
+			break;
+		case 10:
 			for (p in api_response){
 				if (api_response[p].name){
 					tilde_insert.push(api_response[p].name);
