@@ -48,6 +48,9 @@ projectGET = function(api_response) {
 			special = 9;
 			break;
 	}
-
-	apiGET("scripts", [["special", special]]);
+	if (api_response[0]){
+		apiGET("scripts", [["special", special]]);
+	} else {
+		apiGET("scripts", [["special", 12]]);
+	}
 }

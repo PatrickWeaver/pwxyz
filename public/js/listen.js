@@ -72,14 +72,19 @@ function pauseListening() {
 function reset(e) {
   if (e.type == "click") {
     console.log("🖱 Listen Event: " + e + ", Type: " + e.type + ", Button: " + e.which + " reset");
-    if (guest_id === ""){
-      console.log(tilde_insert);
-      setVariables();
-      console.log(tilde_insert);
-      start(); 
-    } else {
-      special = 5;
-      apiGET("scripts", [["special", special]]);
-    }
+    reset_chat();
+  }
+}
+
+reset_chat = function() {
+  console.log("⚙ reset()");
+  if (guest_id === ""){
+    console.log(tilde_insert);
+    setVariables();
+    console.log(tilde_insert);
+    start(); 
+  } else {
+    special = 5;
+    apiGET("scripts", [["special", special]]);
   }
 }

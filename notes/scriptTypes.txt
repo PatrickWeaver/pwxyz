@@ -13,6 +13,7 @@ Specials:
 9: Specific Project
 10: Listing project medias
 11: Just learned name
+12: Confused
 
 
 Types:

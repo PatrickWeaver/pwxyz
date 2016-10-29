@@ -5,7 +5,8 @@ var chatModel = new Schema({
 	guest_id: String,
 	guest_ip: String,
 	chat: Array,
-	time: String
+	time: String,
+	special: String
 });
 
 module.exports = mongoose.model('Chat', chatModel);

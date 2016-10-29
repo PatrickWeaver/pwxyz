@@ -151,9 +151,10 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 	send = function(who, sentMessage) {
 		console.log("⚙ send()");
 		// Runs when a user inputs a message or when a bot finds a message using getBotMessage()
-		console.log("↪️ Sending: '" + sentMessage + "' from " + who)
-
+		console.log("↪️ Sending: '" + sentMessage + "' from " + who);
 		time_sent = Date.now();
+
+		last_chat = sentMessage;
 
 		// Log chat in API:
 		apiPOST(
@@ -161,7 +162,8 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 				"guest_id": guest_id,
 				"guest_ip": guest_ip,
 				"chat": [who, sentMessage],
-				"time": time_sent
+				"time": time_sent,
+				"special": special
 
 			}), "chats"
 		)
@@ -277,8 +279,6 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 							apiGET("scripts", [["special", special]]);
 							break;
 						case 5:
-							apiGET("projects");
-							break;
 						case 11:
 							apiGET("projects", [["media", userMessage.toLowerCase()]]);
 							break;

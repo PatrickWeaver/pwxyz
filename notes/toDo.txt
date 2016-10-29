@@ -16,6 +16,8 @@ Someday:
 * Make a template language to replace tilde_index
 * Scramble input to test for typos, "did you mean?"
 * More robust tilde functionality, JS object/template?
+* On special 5 or 11 check project names before project medias
+* Figure out post status errors
 
 Soon:
 ~ ~ ~ ~ ~ ~ ~ ~ ~ 
@@ -25,6 +27,4 @@ Soon:
 
 Now:
 ~ ~ ~ ~ ~ ~ ~ ~ ~ 
-* When it doesn't know what to do, say that it didn't understand
-* On special 5 or 11 check project names before project medias
-* On speical 5 or 11 if api response is blank do something else
+* fix yes on 2
