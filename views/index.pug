@@ -5,6 +5,8 @@ html(lang="en" ng-app="Chats")
   
   body(ng-controller="mainController")
     div(id="wrapper")
+      div(id="reset-button").
+        ⟳
       div(id="chat-area")
         div(
           ng-repeat="chat in chats | orderBy: 'timestamp'"

@@ -4,6 +4,7 @@
 // listener is a variable to decide what input to look for
 var enterListener = window;
 var sendListener = document.getElementById("send-button");
+var resetListener = document.getElementById("reset-button");
 var composer = document.getElementById("composer");
 var message;
 
@@ -18,6 +19,8 @@ function listenFor() {
   
   enterListener.addEventListener("keydown", listen);
   sendListener.addEventListener("click", listen);
+  resetListener.addEventListener("click", reset);
+
 }
 
 function listen(e) {
@@ -35,7 +38,7 @@ function listen(e) {
     }
   }
   if (e.type == "click") {
-    console.log("🖱 Listen Event: " + e + ", Type: " + e.type + ", Button: " + e.which);
+    console.log("🖱 Listen Event: " + e + ", Type: " + e.type + ", Button: " + e.which + " send");
     if (composer.value != "") {
         chat = true;
     } else {
@@ -63,4 +66,20 @@ function pauseListening() {
   enterListener.removeEventListener("keydown", listen);
   sendListener.removeEventListener("click", listen);
   console.log("🔇 Stop listening for enter or click.");
+}
+
+
+function reset(e) {
+  if (e.type == "click") {
+    console.log("🖱 Listen Event: " + e + ", Type: " + e.type + ", Button: " + e.which + " reset");
+    if (guest_id === ""){
+      console.log(tilde_insert);
+      setVariables();
+      console.log(tilde_insert);
+      start(); 
+    } else {
+      special = 5;
+      apiGET("scripts", [["special", special]]);
+    }
+  }
 }

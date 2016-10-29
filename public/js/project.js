@@ -19,6 +19,7 @@ projectGET = function(api_response) {
 			
 			break;
 		case 10:
+		case 11:
 			for (p in api_response){
 				if (api_response[p].name){
 					tilde_insert.push(api_response[p].name);
@@ -32,23 +33,21 @@ projectGET = function(api_response) {
 			p = api_response[0];
 			tilde_insert.push(p.name);
 			tilde_insert.push(p.media);
-			tilde_insert.push(p.alias);
-			tilde_insert.push(p.collaborators);
+			if (p.alias){
+				tilde_insert.push(p.alias);
+			} else {
+				tilde_insert.push("Patrick Weaver");
+			}
+			if (p.collaborators[0]) {
+				tilde_insert.push(p.collaborators);
+			} else {
+				tilde_insert.push("no one else");
+			}
 			tilde_insert.push(p.url);
 			tilde_insert.type = "project list";
 			special = 9;
 			break;
 	}
-
-	/*
-
-	name: String,
-	media: Array,
-	url: String,
-	alias: String,
-	collaborators: Array
-
-	*/
 
 	apiGET("scripts", [["special", special]]);
 }

@@ -266,14 +266,25 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 				}
 			} else {
 				if (script_count >= script_length) {
-					console.log("Script done, getting new script.")
+					console.log("Script done, getting new script. Special: " + special);
 					switch (special) {
 						case 2:
 							special = 5;
-							apiGET("scripts", [["special", special]])
+							apiGET("scripts", [["special", special]]);
+							break;
+						case 3:
+							special = 11;
+							apiGET("scripts", [["special", special]]);
 							break;
 						case 5:
 							apiGET("projects");
+							break;
+						case 11:
+							apiGET("projects", [["media", userMessage.toLowerCase()]]);
+							break;
+						default:
+							special = 5;
+							apiGET("scripts", [["special", special]]);
 							break;
 					}
 				} else {

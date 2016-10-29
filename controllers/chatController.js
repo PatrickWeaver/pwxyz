@@ -17,9 +17,11 @@ var chatController = function(Chat){
 		var query = {};
 
 		if (req.query.guest_id) {
-			query.guest_id = req.query.guest_id
+			query.guest_id = req.query.guest_id;
 		} else if (req.query._id) {
-			query._id = req.query._id
+			query._id = req.query._id;
+		} else if (req.query.time) {
+			query.time = req.query.time;
 		}
 		Chat.find(query, function(err, chats){
 			if(err){

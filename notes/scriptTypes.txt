@@ -12,6 +12,7 @@ Specials:
 8: Listing specific projects
 9: Specific Project
 10: Listing project medias
+11: Just learned name
 
 
 Types:
