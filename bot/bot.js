@@ -1,3 +1,7 @@
+var http = require('http');
+var possible_guests = "";
+
+
 startBot = function(req, res){
 	console.log("I am the bot.");
 
@@ -6,14 +10,41 @@ startBot = function(req, res){
      req.socket.remoteAddress ||
      req.connection.socket.remoteAddress;
 
-    res.render('index', {
-		pretty: true,
+  console.log(process.env.PWXYZ_URL);
 
-		// Template variables
-		guest_ip: guest_ip,
-		pageTitle: 'Patrick Weaver!'
-	
-	});
+  var options = {
+  	host: process.env.PWXYZ_URL,
+  	port: 8000,
+  	path: "/api/guests/" + process.env.PWXYZ_KEY + "?guest_ip=" + guest_ip 
+  };
+  
+  http.get(options, function(response) {
+  	response.on("data", function(chunk){
+  		console.log("CHUNK: " + chunk);
+  		possible_guests = String(chunk);
+
+  		res.render('index', {
+				pretty: true,
+
+				// Template variables
+				guests: possible_guests,
+				pageTitle: 'Patrick Weaver!'
+			
+			});
+  	});
+  }).on("error", function(e) {
+  	console.log("Error: " + e.message);
+
+  	res.render('error', {
+				pretty: true,
+
+				// Template variables
+				error: e.message
+			
+			});
+  });
+
+  
 
 
 }

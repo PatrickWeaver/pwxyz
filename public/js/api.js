@@ -33,10 +33,6 @@ apiGET = function(model, parameters) {
 					// Chat API call
 					//chatResponse(api_response);
 					break;
-				case "guests":
-					// Guest API call
-					guestGET(api_response);
-					break;
 				case "projects":
 					// Projects API call
 					projectGET(api_response);
@@ -86,10 +82,6 @@ apiPOST = function(body, model, item) {
 					break;
 				case "guests":
 					// Guest API call
-					/*guest_id = JSON.parse(api_post.response)._id;
-					if (guest_name = "") {
-						askGuestForName();
-					}*/
 					break;
 				case "projects":
 					// Project API call

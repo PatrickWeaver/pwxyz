@@ -15,7 +15,6 @@ var guestController = function(Guest){
 
 	var get = function(req,res){
 		var query = {};
-		console.log(req.query);
 		if (req.query.type == "find") {
 			console.log("find a guest!!");
 			if (req.query.guest_name) {
@@ -24,14 +23,8 @@ var guestController = function(Guest){
 					query.ip_addresses = req.query.guest_ip;
 				}
 			}
-			console.log(query);
 			findAGuest(query, req, res);
 		} else {
-
-			console.log("regular get");
-
-
-
 
 			if (req.query.ip_addresses) {
 				query.ip_addresses = req.query.ip_addresses;
@@ -51,7 +44,6 @@ var guestController = function(Guest){
 					res.status(500).send(err);
 					console.log("500 Error");
 				} else {
-					console.log("no error?");
 					var returnGuests = [];
 					guests.forEach(function(element, index, array){
 						var newGuest = element.toJSON();
@@ -71,13 +63,11 @@ var guestController = function(Guest){
 	}
 
 	findAGuest = function(query, req, res) {
-		console.log(query);
 		Guest.find(query, function(err, guests){
 			if(err){
 				res.status(500).send(err);
 				console.log("500 Error");
 			} else {
-				console.log("no error?");
 				var returnGuests = [];
 				guests.forEach(function(element, index, array){
 					var newGuest = element.toJSON();
