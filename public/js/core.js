@@ -212,7 +212,6 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 							if (userMessage.toUpperCase().includes(keyword_to_search.toUpperCase())){
 								console.log("🔔 keyword found: " + keyword_to_search);
 								keyword_found = true;
-								apiGET("scripts", [["_id", to_script]]);
 								break
 							} else {
 								console.log("🔕 No keyword")
@@ -222,6 +221,14 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 				}
 			}
 			if (keyword_found){
+				switch (special) {
+					case 5:
+					case 11: 
+					apiGET("projects");
+					break;
+				default:
+					apiGET("scripts", [["_id", to_script]]);
+				}
 				return;
 			}
 
