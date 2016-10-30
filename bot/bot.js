@@ -19,6 +19,7 @@ startBot = function(req, res){
   };
 
   console.log("request url: " + options.host + options.path);
+  console.log("port: " + options.port);
   
   http.get(options, function(response) {
   	response.on("data", function(chunk){
