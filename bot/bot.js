@@ -17,6 +17,8 @@ startBot = function(req, res){
   	port: process.env.PORT || 8000,
   	path: "/api/guests/" + process.env.PWXYZ_KEY + "?guest_ip=" + guest_ip 
   };
+
+  console.log("request url: " + options.host + options.path);
   
   http.get(options, function(response) {
   	response.on("data", function(chunk){
