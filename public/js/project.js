@@ -32,7 +32,7 @@ projectGET = function(api_response) {
 			tilde_insert = [];
 			p = api_response[0];
 			tilde_insert.push(p.name);
-			tilde_insert.push(p.media);
+			tilde_insert.push(p.media[0]);
 			if (p.alias){
 				tilde_insert.push(p.alias);
 			} else {
