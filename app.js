@@ -51,7 +51,7 @@ bot = require('./bot/bot');
 app.use('/api/projects', projectRouter);
 app.use('/api/chats', chatRouter);
 app.use('/api/scripts', scriptRouter);
-app.use('/api/guests/' + process.env.PWXYZ_KEY, guestRouter);
+app.use('/api/guests', guestRouter);
 
 // For App:
 app.get('/', function(req, res){
