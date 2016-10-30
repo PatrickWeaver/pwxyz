@@ -47,32 +47,36 @@ setVariables();
 // Language:
 var yes = ["yes", "ya", "yeah", "yup", "ok"];
 
-	
 
+function formatDate(date) {
+    var d = new Date(date);
+    var hh = d.getHours();
+    var m = d.getMinutes();
+    //var s = d.getSeconds();
+    //var dd = "AM";
+    var h = hh;
+    if (h >= 12) {
+        h = hh-12;
+        //dd = "PM";
+    }
+    if (h == 0) {
+        h = 12;
+    }
+    //m = m<d.10?"0"+m:m;
 
+    //s = s<10?"0"+s:s;
 
+    /* if you want 2 digit hours:
+    h = h<10?"0"+h:h; */
 
+    //var pattern = new RegExp("0?"+hh+":"+m+":"+s);
 
-/*
-	var doneChatting = false;
-	var keyword_set = {};
-	var tilde_insert = [];
+    //var replacement = h+":"+m;
+    /* if you want to add seconds
+    replacement += ":"+s;  */
+    //replacement += " "+dd;    
 
-	// Script
-	var current_script;
-	var special;
-	var script_count = 0;
-	var script_length;
+    time = h + ":" + m;
 
-
-	var last_chat;
-
-	// Guest
-	var guest_id = "";
-	var guest_name = "";
-	var guest_ip;
-
-	var unknown_guest = true;
-	var possible_guests = [];
-
-	*/
+    return time;
+}	

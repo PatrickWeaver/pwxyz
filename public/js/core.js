@@ -161,6 +161,7 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 
 		last_chat = sentMessage;
 
+
 		// Log chat in API:
 		apiPOST(
 			JSON.stringify({
@@ -179,10 +180,12 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 			user_type = "user";
 		}
 
+		time = formatDate(time_sent);
+
 		// Push to browser
 		$timeout(function() {
 			$scope.chats.push({
-				id: count, name: who, user_type: user_type, timestamp: time_sent, message: sentMessage, count: count, special: special
+				id: count, name: who, user_type: user_type, u_time: time_sent, time: time, message: sentMessage, count: count, special: special
 			});
 			$location.hash('chat-' + count);
 			$anchorScroll();
