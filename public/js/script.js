@@ -15,7 +15,10 @@ scriptGET = function(api_response) {
 	current_script = api_response[randomScript];
 	special = current_script.special;
 	script_length = current_script.chats.length;
-	keyword_set[current_script._id] = current_script.keywords;
+
+	if (current_script.keywords) {
+		keyword_set[current_script._id] = current_script.keywords;
+	}
 
 	console.log("📜 Current Script: " + current_script._id);
 
