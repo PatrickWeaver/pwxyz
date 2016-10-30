@@ -21,8 +21,13 @@ window.onload = function(){
 
 botChat = function() {
 	console.log("⚙ botChat()");
+	question = false;
 
-	bot_message = current_script.chats[script_count]
+	bot_message = current_script.chats[script_count];
+
+	if (bot_message[bot_message.length - 1] === "?") {
+		question = true;
+	}
 
 	tildeReplace(bot_message).then(function(bot_message) {
 	  console.log("✔️ tildeReplace() Resolve: Success");
@@ -229,12 +234,14 @@ app.controller('mainController', function($scope, $http, $timeout, $location, $a
 					break;
 				}
 				if (tilde_insert.length === 1){
-					console.log("🔍 Checking for yes keywords.");
-					for (y in yes){
-						if (userMessage.toUpperCase().includes(yes[y].toUpperCase())){
-							console.log("🔔 yes keyword found: " + keyword_to_search);
-							tilde_found = keyword_to_search;
-							break;
+					if (question){
+						console.log("🔍 Checking for yes keywords.");
+						for (y in yes){
+							if (userMessage.toUpperCase().includes(yes[y].toUpperCase())){
+								console.log("🔔 yes keyword found: " + keyword_to_search);
+								tilde_found = keyword_to_search;
+								break;
+							}
 						}
 					}
 				}

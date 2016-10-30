@@ -3,13 +3,18 @@ var scriptController = function(Script){
 	var post = function(req, res){
 		var script = new Script(req.body);
 
-		if(!req.body.chats){
+		if (!req.body.api_key){
 			res.status(400);
-			res.send('Chats are required');
+			res.send('API Key is required');
 		} else {
-			script.save();
-			res.status(201);
-			res.send(script);
+			if(!req.body.chats){
+				res.status(400);
+				res.send('Chats are required');
+			} else {
+				script.save();
+				res.status(201);
+				res.send(script);
+			}
 		}
 	}
 

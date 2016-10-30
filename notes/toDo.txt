@@ -27,4 +27,3 @@ Soon:
 
 Now:
 ~ ~ ~ ~ ~ ~ ~ ~ ~ 
-* fix yes on 2

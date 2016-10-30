@@ -18,6 +18,8 @@ setVariables = function() {
 	// Script:
 	keyword_set = {};
 
+	// Chat:
+	question = false;
 
 }
 
@@ -36,6 +38,9 @@ var possible_guests = [];
 var current_script;
 var script_length;
 var keyword_set = {};
+
+// Chat:
+var question = false;
 
 setVariables();
 
