@@ -16,7 +16,6 @@ projectGET = function(api_response) {
 				}
 			}
 			special = 10;
-			
 			break;
 		case 10:
 		case 11:
@@ -51,6 +50,8 @@ projectGET = function(api_response) {
 	if (api_response[0]){
 		apiGET("scripts", [["special", special]]);
 	} else {
-		apiGET("scripts", [["special", 12]]);
+		send("bot", "Unfortunately, I don't know about that.");
+		special = 5;
+		apiGET("projects");
 	}
 }
