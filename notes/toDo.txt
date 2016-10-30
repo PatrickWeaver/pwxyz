@@ -21,7 +21,6 @@ Someday:
 
 Soon:
 ~ ~ ~ ~ ~ ~ ~ ~ ~ 
-* add auth/auth to api
 * populate database
 * copy database to production
 

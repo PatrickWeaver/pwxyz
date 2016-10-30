@@ -2,15 +2,19 @@ var projectController = function(Project){
 
 	var post = function(req, res){
 		var project = new Project(req.body);
-
-		if(!req.body.name){
+		if (req.body.api_key != process.env.PWXYZ_KEY){
 			res.status(400);
-			res.send('Name is required');
+			res.send('API Key is required');
 		} else {
+			if(!req.body.name){
+				res.status(400);
+				res.send('Name is required');
+			} else {
 
-			project.save();
-			res.status(201);
-			res.send(project);
+				project.save();
+				res.status(201);
+				res.send(project);
+			}
 		}
 	}
 

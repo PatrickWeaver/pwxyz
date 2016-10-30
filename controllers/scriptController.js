@@ -3,7 +3,7 @@ var scriptController = function(Script){
 	var post = function(req, res){
 		var script = new Script(req.body);
 
-		if (!req.body.api_key){
+		if (req.body.api_key != process.env.PWXYZ_KEY){
 			res.status(400);
 			res.send('API Key is required');
 		} else {
