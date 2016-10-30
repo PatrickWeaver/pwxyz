@@ -14,7 +14,7 @@ startBot = function(req, res){
 
   var options = {
   	host: process.env.PWXYZ_URL,
-  	port: 8000,
+  	port: process.env.PORT || 8000,
   	path: "/api/guests/" + process.env.PWXYZ_KEY + "?guest_ip=" + guest_ip 
   };
   
