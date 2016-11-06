@@ -61,6 +61,12 @@ function formatDate(date) {
     if (h == 0) {
         h = 12;
     }
+
+    if (m < 10) {
+        m_str = "0" + m;
+    } else {
+        m_str = m;
+    }
     //m = m<d.10?"0"+m:m;
 
     //s = s<10?"0"+s:s;
@@ -75,7 +81,7 @@ function formatDate(date) {
     replacement += ":"+s;  */
     //replacement += " "+dd;    
 
-    time = h + ":" + m;
+    time = h + ":" + m_str;
 
     return time;
 }
