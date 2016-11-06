@@ -25,4 +25,9 @@ Soon:
 * copy database to production
 
 Now:
-~ ~ ~ ~ ~ ~ ~ ~ ~ 
+~ ~ ~ ~ ~ ~ ~ ~ ~
+* Fix reset button on phone
+* Fix links to wrap on phone
+* From 5, if request is not a project, list projects
+* If only one project type is returned go straight there
+* Make individual projects links to type that in the box

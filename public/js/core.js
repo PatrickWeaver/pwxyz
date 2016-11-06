@@ -4,9 +4,19 @@ start = function() {
 	// Runs when the session starts
 	console.log("⚙ start()");
 
-	guest_ip = document.getElementById("guest-ip").innerHTML;
-	guest_ip = guest_ip.replace(/\n|\r/g, "").replace(/\s|\r/g, "");
-	apiGET("guests", [["ip_addresses", guest_ip]]);
+	guests = document.getElementById("guests").innerHTML;
+	guests = JSON.parse(guests);
+
+	number_of_guests = guests.length;
+	console.log(number_of_guests + " possible guests:")
+	for (g in guests) {
+		guest = guests[g];
+		console.log(guest + ". Name: " + guest.name + ", Id: " + guest._id);
+		possible_guests.push(guest);
+		
+	}
+
+	findGuestName();
 		
 };
 

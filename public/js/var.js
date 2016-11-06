@@ -47,6 +47,7 @@ setVariables();
 // Language:
 var yes = ["yes", "ya", "yeah", "yup", "ok"];
 
+<<<<<<< HEAD
 
 function formatDate(date) {
     var d = new Date(date);
@@ -80,3 +81,5 @@ function formatDate(date) {
 
     return time;
 }	
+=======
+>>>>>>> 2175e353770ad421b6ac6e4375d3ecce86c469a7
