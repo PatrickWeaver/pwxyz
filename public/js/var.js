@@ -47,8 +47,6 @@ setVariables();
 // Language:
 var yes = ["yes", "ya", "yeah", "yup", "ok"];
 
-<<<<<<< HEAD
-
 function formatDate(date) {
     var d = new Date(date);
     var hh = d.getHours();
@@ -80,6 +78,4 @@ function formatDate(date) {
     time = h + ":" + m;
 
     return time;
-}	
-=======
->>>>>>> 2175e353770ad421b6ac6e4375d3ecce86c469a7
+}
