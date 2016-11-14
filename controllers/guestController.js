@@ -15,13 +15,11 @@ var guestController = function(Guest){
 
 	var get = function(req,res){
 		var query = {};
+		console.log("TYPE: " + req.query.type);
 		if (req.query.type == "find") {
 			console.log("find a guest!!");
-			if (req.query.guest_name) {
-				query.name = req.query.guest_name;
-				if (req.query.guest_ip) {
-					query.ip_addresses = req.query.guest_ip;
-				}
+			if (req.query.guest_ip) {
+				query.ip_addresses = req.query.guest_ip;
 			}
 			findAGuest(query, req, res);
 		} else {
