@@ -59,36 +59,6 @@ var guestController = function(Guest){
 		});
 	}
 
-	/*findAGuest = function(query, req, res) {
-		Guest.find(query, function(err, guests){
-			if(err){
-				res.status(500).send(err);
-				console.log("500 Error");
-			} else {
-				var returnGuests = [];
-				guests.forEach(function(element, index, array){
-					var newGuest = element.toJSON();
-					newGuest.links = {};
-					newGuest.links.self = 'http://' + req.headers.host + '/api/guests/' + newGuest._id;
-					returnGuests.push(newGuest);
-				});
-				if (!returnGuests){
-					res.status(204);
-				} else {
-					if (returnGuests.length === 0) {
-						// Post a new guest
-					} else if (returnGuests.length === 1) {
-						res.json(returnGuests);
-					} else if (returnGuests.length > 1) {
-						// Send back a question
-					}
-					
-				}
-				
-			}
-		});
-	}*/
-
 
 	return {
 		post: post,
