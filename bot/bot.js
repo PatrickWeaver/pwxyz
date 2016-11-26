@@ -3,7 +3,7 @@ var possible_guests = "";
 
 
 startBot = function(req, res){
-	console.log("I am the bot.");
+	console.log("🤖 I am the bot responding to a request!");
 
 	var guest_ip = req.headers['x-forwarded-for'] || 
      req.connection.remoteAddress || 
@@ -15,7 +15,7 @@ startBot = function(req, res){
   var options = {
   	host: process.env.PWXYZ_URL,
   	port: process.env.PORT || 8000,
-  	path: "/api/guests/" + process.env.PWXYZ_KEY + "?ip_addresses=" + guest_ip
+  	path: "/api/guests/?ip_addresses=" + guest_ip
   };
 
   console.log("request url: " + options.host + options.path);
