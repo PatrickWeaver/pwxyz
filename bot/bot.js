@@ -24,9 +24,9 @@ startBot = function(req, res){
     	path: "/api/guests/?ip_addresses=" + guest_ip
     };
 
-    url = "http://" + options.hostname + ":" + options.port + options.path;
+    url = "http://" + options.hostname + options.path;
 
-    console.log("http://" + "request url: " + options.hostname + options.path);
+    console.log(url);
     
     
     request(url, function (error, response, body) {
