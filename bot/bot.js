@@ -26,64 +26,54 @@ startBot = function(req, res){
 
     url = "http://" + options.hostname + options.path;
 
-    console.log(url);
+    console.log("⬆️ " + url);
     
     
     request(url, function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        console.log(body);
+        resp = JSON.parse(body);
+
+        console.log("⬇️ Response: " + body);
+
+        for (guest in resp) {
+          console.log("👤 "  + guest + ": " + resp[guest].name);
+        }
 
         res.render('index', {
           pretty: true,
 
           // Template variables
-          body: body,
-          guests: possible_guests,
+          guests: body,
+          guest_ip: guest_ip,
           pageTitle: 'Patrick Weaver!'
         
         });
 
 
       } else if (error) {
-        console.log(error);
+        console.log("ERROR: " + error);
+          res.render('index', {
+            pretty: true,
+
+            // Template variables
+            guest_ip: guest_ip,
+            pageTitle: 'Patrick Weaver!'
+          
+          });
       } else {
-        console.log(response);
-        console.log(body);
+        console.log("RESPONSE: " + response);
+        console.log("BODY : " + body);
+        res.render('index', {
+          pretty: true,
+
+          // Template variables
+          guest_ip: guest_ip,
+          pageTitle: 'Patrick Weaver!'
+        
+        });
       }
     });
-
-
-    
-    /*
-    http.request(options, function(response) {
-    	response.on("data", function(chunk){
-    		console.log("CHUNK: " + chunk);
-    		possible_guests = String(chunk);
-
-    		res.render('index', {
-  				pretty: true,
-
-  				// Template variables
-  				guests: possible_guests,
-  				pageTitle: 'Patrick Weaver!'
-  			
-  			});
-    	});
-    }).on("error", function(e) {
-    	console.log("Error: " + e.message);
-
-    	res.render('error', {
-  				pretty: true,
-
-  				// Template variables
-  				error: e.message
-  			
-  			});
-    });
-    */
   }
-
-
 }
 
 

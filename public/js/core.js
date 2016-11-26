@@ -4,6 +4,7 @@ start = function() {
 	// Runs when the session starts
 	console.log("⚙ start()");
 
+	guest_ip = document.getElementById("guest-ip").innerHTML;
 	guests = document.getElementById("guests").innerHTML;
 	guests = JSON.parse(guests);
 

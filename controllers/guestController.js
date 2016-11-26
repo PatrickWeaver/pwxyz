@@ -16,8 +16,9 @@ var guestController = function(Guest){
 	var get = function(req,res){
 		var query = {};
 
+		console.log("🗄 GET Guest:")
 		for (q in req.query) {
-			console.log("QUERY " + q + ": " + req.query[q]);
+			console.log("📎 " + q + ": " + req.query[q]);
 		}
 
 		if (req.query.ip_addresses) {
@@ -31,7 +32,10 @@ var guestController = function(Guest){
 			query._id = req.query._id
 		}
 
-		console.log(query);
+		console.log("🛀 Clean GET Guest:")
+		for (q in query) {
+			console.log("📎 " + q + ": " + query[q]);
+		}
 
 		Guest.find(query, function(err, guests){
 			if(err){
@@ -55,7 +59,7 @@ var guestController = function(Guest){
 		});
 	}
 
-	findAGuest = function(query, req, res) {
+	/*findAGuest = function(query, req, res) {
 		Guest.find(query, function(err, guests){
 			if(err){
 				res.status(500).send(err);
@@ -83,7 +87,7 @@ var guestController = function(Guest){
 				
 			}
 		});
-	}
+	}*/
 
 
 	return {
