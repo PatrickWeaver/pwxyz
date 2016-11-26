@@ -16,8 +16,8 @@ var guestController = function(Guest){
 	var get = function(req,res){
 		var query = {};
 
-		for (q in query) {
-			console.log(q + ": " + query[q]);
+		for (q in req.query) {
+			console.log("QUERY " + q + ": " + req.query[q]);
 		}
 
 		if (req.query.ip_addresses) {
